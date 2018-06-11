@@ -1,0 +1,18 @@
+apply plugin: 'com.android.library'
+
+// project/build.gradle
+// apply from: 'https://coding.net/u/devlab/p/Resource/git/raw/master/android/project.gradle'
+def version = rootProject.ext.version
+def libs = rootProject.ext.libs
+android {
+    compileSdkVersion version.compileSdkVersion
+}
+
+dependencies {
+    releaseImplementation libs.leakCanaryRelease
+    debugImplementation libs.leakCanaryDebug
+    implementation libs.okhttp3
+    implementation libs.stetho
+    implementation libs.stetho_okhttp3
+    implementation project(path:':lightadapter')
+}
