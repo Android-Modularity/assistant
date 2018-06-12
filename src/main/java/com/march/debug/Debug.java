@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.march.debug.funcs.console.ConsoleModel;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -16,6 +17,8 @@ import okhttp3.OkHttpClient;
  * @author chendong
  */
 public class Debug {
+
+    private static DataSource sDataSource = new DataSource();
 
     private static boolean debug = true;
 
@@ -47,5 +50,17 @@ public class Debug {
 
     public static RefWatcher getRefWatcher() {
         return sRefWatcher;
+    }
+
+    public static void handleLog(String tag, String logMsg) {
+        sDataSource.storeLog(new ConsoleModel(tag, logMsg));
+    }
+
+    public static void handleLog(int level, String tag, String logMsg) {
+        sDataSource.storeLog(new ConsoleModel(level, tag, logMsg));
+    }
+
+    public static DataSource getDataSource() {
+        return sDataSource;
     }
 }
