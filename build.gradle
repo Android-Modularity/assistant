@@ -14,5 +14,5 @@ dependencies {
     implementation libs.okhttp3
     implementation libs.stetho
     implementation libs.stetho_okhttp3
-    implementation project(path:':lightadapter')
+    // implementation project(path:':lightadapter')
 }
