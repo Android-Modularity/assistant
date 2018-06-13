@@ -10,7 +10,7 @@ import okhttp3.HttpUrl;
  *
  * @author chendong
  */
-public class NetModel {
+public class NetModel  {
 
     private HttpUrl url;
     private int     code;
@@ -122,4 +122,5 @@ public class NetModel {
     public void setResponseSize(long responseSize) {
         this.responseSize = responseSize;
     }
+
 }

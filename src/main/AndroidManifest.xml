@@ -3,11 +3,27 @@
     package="com.march.debug">
 
     <application>
-        <activity
-            android:name=".DebugActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".DebugActivity"/>
 
+        <activity android:name=".funcs.net.NetDetailActivity"/>
+
+        <activity android:name=".funcs.browser.BrowserTextActivity">
+            <!--<intent-filter>-->
+                <!--&lt;!&ndash;接受文本分享 text/plain&ndash;&gt;-->
+                <!--<data android:mimeType="text/*"/>-->
+            <!--</intent-filter>-->
         </activity>
+        <activity
+            android:name=".funcs.browser.BrowserImgActivity">
+            <intent-filter>
+                <!--接受单个文件分享-->
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <!--接受图片类文件分享 image/jpeg" "image/bmp" "image/gif" "image/jpg" "image/png"-->
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+        </activity>
+
     </application>
 </manifest>
 

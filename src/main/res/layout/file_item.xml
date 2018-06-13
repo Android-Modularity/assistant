@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/file_type_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:background="#1eb271"
+        android:gravity="center"
+        android:minWidth="50dp"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        tools:text="文件"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/file_type_tv"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/file_name_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="test.js"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/file_desc_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:ellipsize="start"
+            android:singleLine="true"
+            android:text="xxxxxxxxxxxxxxxxxxx"
+            android:textColor="@color/text_second_color"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+</RelativeLayout>

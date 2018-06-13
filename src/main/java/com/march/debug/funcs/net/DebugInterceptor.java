@@ -2,7 +2,10 @@ package com.march.debug.funcs.net;
 
 import android.support.annotation.NonNull;
 
-import com.march.debug.Debug;
+import com.march.debug.Debugger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -37,10 +40,13 @@ public final class DebugInterceptor implements Interceptor {
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
         try {
-            NetModel model = new NetModel();
-            Debug.getDataSource().storeNetModel(model);
-            model.setStartTime(System.currentTimeMillis());
             Request request = chain.request();
+            if(!Debugger.getInst().getDebugInjector().checkNetModel(request.url().toString())){
+                return chain.proceed(chain.request());
+            }
+            NetModel model = new NetModel();
+            Debugger.getInst().getDataSource().storeNetModel(model);
+            model.setStartTime(System.currentTimeMillis());
             logRequest(request, model);
             Response response = chain.proceed(request);
             logResponse(response, model);
@@ -80,7 +86,7 @@ public final class DebugInterceptor implements Interceptor {
             }
             if (isPlaintext(buffer) && charset != null) {
                 String body = buffer.readString(charset);
-                model.setRequestBody(body);
+                model.setRequestBody(toJson(body));
                 model.setRequestSize(body.getBytes().length);
             } else {
                 model.setRequestBody("二进制body");
@@ -117,9 +123,18 @@ public final class DebugInterceptor implements Interceptor {
                 model.setResponseSize(buffer.size());
             } else if (responseBody.contentLength() != 0) {
                 String body = buffer.clone().readString(charset == null ? Charset.forName("utf-8") : charset);
-                model.setResponseBody(body);
+                model.setResponseBody(toJson(body));
                 model.setResponseSize(body.getBytes().length);
             }
+        }
+    }
+
+    private String toJson(String data){
+        try {
+           return new JSONObject(data).toString(2).replace("\\/", "/");
+        } catch (JSONException e) {
+            e.printStackTrace();
+           return "json parse error \n "+ data;
         }
     }
 

@@ -8,13 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.stetho.common.LogUtil;
-import com.march.debug.Debug;
-import com.march.debug.DebugFragment;
+import com.march.debug.base.BaseDebugFragment;
+import com.march.debug.Debugger;
 import com.march.debug.R;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
+import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
 import com.march.lightadapter.helper.LightManager;
 
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author chendong
  */
-public class ConsoleFragment extends DebugFragment {
+public class ConsoleFragment extends BaseDebugFragment {
 
     private RecyclerView               mRecyclerView;
     private LightAdapter<ConsoleModel> mLightAdapter;
@@ -39,6 +39,7 @@ public class ConsoleFragment extends DebugFragment {
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -46,7 +47,7 @@ public class ConsoleFragment extends DebugFragment {
     }
 
     public void updateAdapter() {
-        List<ConsoleModel> logMsgs = Debug.getDataSource().getConsoleModels();
+        List<ConsoleModel> logMsgs = Debugger.getInst().getDataSource().getConsoleModels();
         if (mLightAdapter != null) {
             mLightAdapter.update().update(logMsgs);
             return;
@@ -54,10 +55,11 @@ public class ConsoleFragment extends DebugFragment {
         mLightAdapter = new LightAdapter<ConsoleModel>(getActivity(), logMsgs, R.layout.console_item) {
             @Override
             public void onBindView(LightHolder holder, ConsoleModel data, int pos, int type) {
-                holder.setText(R.id.tv, data.getMsg());
+                holder.setText(R.id.tv, data.getTag()+" : "+data.getMsg());
             }
         };
         LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(getActivity()));
+        LinerDividerDecoration.attachRecyclerView(mRecyclerView,R.drawable.divider);
     }
 
 }

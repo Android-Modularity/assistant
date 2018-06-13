@@ -1,4 +1,4 @@
-package com.march.debug;
+package com.march.debug.base;
 
 import android.support.v4.app.Fragment;
 
@@ -8,12 +8,12 @@ import android.support.v4.app.Fragment;
  *
  * @author chendong
  */
-public abstract class DebugFragment extends Fragment {
+public abstract class BaseDebugFragment extends Fragment {
 
     protected String mTitle;
 
     public interface DebugFragmentMaker {
-        DebugFragment make(String title);
+        BaseDebugFragment make(String title);
     }
 
     public void setTitle(String title) {
@@ -22,5 +22,9 @@ public abstract class DebugFragment extends Fragment {
 
     public String getTitle() {
         return mTitle;
+    }
+
+    public boolean onBackPressed(){
+        return false;
     }
 }

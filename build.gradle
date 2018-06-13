@@ -18,4 +18,5 @@ dependencies {
     implementation libs.stetho_okhttp3
     implementation libs.common
     implementation libs.lightadapter
+    implementation libs.glide
 }

@@ -7,10 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 
+import com.march.common.utils.ToastUtils;
+import com.march.debug.base.BaseDebugActivity;
+import com.march.debug.base.BaseDebugFragment;
 import com.march.debug.funcs.console.ConsoleFragment;
+import com.march.debug.funcs.files.FileFragment;
 import com.march.debug.funcs.net.NetFragment;
+import com.march.debug.funcs.tools.ToolsFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,14 +27,17 @@ import java.util.Map;
  *
  * @author chendong
  */
-public class DebugActivity extends AppCompatActivity {
+public class DebugActivity extends BaseDebugActivity {
 
+    public static final String TOOL = "工具";
     public static final String CONSOLE = "控制台";
     public static final String NET     = "网络";
+    public static final String FILE     = "文件";
 
-    private ViewPager    mContentVp;
-    private TabLayout    mTitleTabLy;
-    private List<String> mTabList;
+    private ViewPager         mContentVp;
+    private TabLayout         mTitleTabLy;
+    private List<String>      mTabList;
+    private BaseDebugFragment mDebugFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,18 +49,26 @@ public class DebugActivity extends AppCompatActivity {
         mTabList = new ArrayList<>();
         mTabList.add(CONSOLE);
         mTabList.add(NET);
+        mTabList.add(FILE);
+        mTabList.add(TOOL);
 
 
-        mDebugFragmentMaker = new DebugFragment.DebugFragmentMaker() {
+        mDebugFragmentMaker = new BaseDebugFragment.DebugFragmentMaker() {
             @Override
-            public DebugFragment make(String title) {
-                DebugFragment fragment = null;
+            public BaseDebugFragment make(String title) {
+                BaseDebugFragment fragment = null;
                 switch (title) {
+                    case TOOL:
+                        fragment = new ToolsFragment();
+                        break;
                     case CONSOLE:
                         fragment = new ConsoleFragment();
                         break;
                     case NET:
                         fragment = new NetFragment();
+                        break;
+                    case FILE:
+                        fragment = new FileFragment();
                         break;
                 }
                 if (fragment != null) {
@@ -62,21 +77,37 @@ public class DebugActivity extends AppCompatActivity {
                 return fragment;
             }
         };
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mContentVp.setAdapter(adapter);
         mContentVp.setOffscreenPageLimit(mTabList.size());
+        mContentVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mDebugFragment = adapter.getFragment(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         mTitleTabLy.setupWithViewPager(mContentVp, true);
     }
 
-    private DebugFragment.DebugFragmentMaker mDebugFragmentMaker;
+    private BaseDebugFragment.DebugFragmentMaker mDebugFragmentMaker;
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        private Map<String, DebugFragment> mDebugFragmentMap;
+        private Map<String, BaseDebugFragment> mDebugFragmentMap;
 
-        public DebugFragment getFragment(int pos) {
+        public BaseDebugFragment getFragment(int pos) {
             String title = mTabList.get(pos);
-            DebugFragment fragment = mDebugFragmentMap.get(title);
+            BaseDebugFragment fragment = mDebugFragmentMap.get(title);
             if (fragment == null) {
                 fragment = mDebugFragmentMaker.make(title);
             }
@@ -106,4 +137,19 @@ public class DebugActivity extends AppCompatActivity {
         }
     }
 
+    private long lastTime = -1;
+
+    @Override
+    public void onBackPressed() {
+        if(mDebugFragment!=null && mDebugFragment.onBackPressed()){
+            return;
+        }
+        long curTime = System.currentTimeMillis();
+        if(curTime - lastTime < 1500){
+            super.onBackPressed();
+        }else {
+            lastTime = curTime;
+            ToastUtils.show("再按一次退出～");
+        }
+    }
 }

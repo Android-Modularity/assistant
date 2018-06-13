@@ -23,11 +23,11 @@ public class DataSource {
     }
 
     public void storeLog(ConsoleModel msg) {
-        mConsoleModels.add(msg);
+        mConsoleModels.add(0,msg);
     }
 
     public void storeNetModel(NetModel netModel) {
-        mNetModels.add(netModel);
+        mNetModels.add(0,netModel);
     }
 
     public List<ConsoleModel> getConsoleModels() {
