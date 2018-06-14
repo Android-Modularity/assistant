@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.march.common.utils.BitmapUtils;
-import com.march.common.utils.LogUtils;
+import com.march.common.utils.LgUtils;
 import com.march.debug.R;
 import com.march.debug.base.BaseDebugActivity;
 
@@ -69,7 +69,7 @@ public class BrowserImgActivity extends BaseDebugActivity {
         int sampleSize = getSampleSize(bitmapSize.outWidth, bitmapSize.outHeight, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = sampleSize;
-        LogUtils.e("sample size = " + sampleSize);
+        LgUtils.e("sample size = " + sampleSize);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             opts.outConfig = Bitmap.Config.RGB_565;
         }
@@ -104,5 +104,11 @@ public class BrowserImgActivity extends BaseDebugActivity {
                 .append("大小： ").append(String.format(Locale.getDefault(), "%.2f", file.length() / 2014f)).append("kb");
         detailTv.setText(sb.toString());
         loadImg(path);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BitmapUtils.recycleBitmaps(mBitmap);
     }
 }

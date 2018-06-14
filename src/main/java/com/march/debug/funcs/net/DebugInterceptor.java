@@ -41,7 +41,7 @@ public final class DebugInterceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         try {
             Request request = chain.request();
-            if(!Debugger.getInst().getDebugInjector().checkNetModel(request.url().toString())){
+            if (!Debugger.getInst().getInjector().checkNetModel(request.url().toString())) {
                 return chain.proceed(chain.request());
             }
             NetModel model = new NetModel();

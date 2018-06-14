@@ -16,8 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.march.debug.base.BaseDebugFragment;
+import com.march.common.Common;
 import com.march.debug.R;
+import com.march.debug.base.BaseDebugFragment;
 import com.march.debug.funcs.browser.BrowserTextActivity;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
@@ -136,7 +137,7 @@ public class FileFragment extends BaseDebugFragment {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-            uri = FileProvider.getUriForFile(requireActivity(), "com.march.weex.fileProvider", file);
+            uri = FileProvider.getUriForFile(requireActivity(), Common.BuildConfig.APPLICATION_ID + ".fileProvider", file);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }else{
             uri = Uri.fromFile(file);

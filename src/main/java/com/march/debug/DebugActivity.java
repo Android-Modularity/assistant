@@ -1,5 +1,8 @@
 package com.march.debug;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -7,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.ClipboardManager;
+import android.text.TextUtils;
 
 import com.march.common.utils.ToastUtils;
 import com.march.debug.base.BaseDebugActivity;
@@ -150,6 +155,22 @@ public class DebugActivity extends BaseDebugActivity {
         }else {
             lastTime = curTime;
             ToastUtils.show("再按一次退出～");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (Utils.SCAN_REQ_CODE == requestCode) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                if (clipboardManager != null) {
+                    CharSequence text = clipboardManager.getText();
+                    if (!TextUtils.isEmpty(text)) {
+                        Debugger.getInst().getInjector().handleScanResult(this, text);
+                    }
+                }
+            }
         }
     }
 }

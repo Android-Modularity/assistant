@@ -33,7 +33,7 @@ public class CopyRunnable implements Runnable {
             return;
         }
         ClipboardManager cm = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData mClipData = ClipData.newPlainText("Label", "这里是要复制的文字");
+        ClipData mClipData = ClipData.newPlainText("Label", text);
         if (cm != null) {
             cm.setPrimaryClip(mClipData);
         }

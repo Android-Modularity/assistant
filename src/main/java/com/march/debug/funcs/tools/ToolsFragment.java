@@ -4,8 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -17,9 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.march.debug.BuildConfig;
+import com.march.common.Common;
 import com.march.debug.R;
 import com.march.debug.SignUtils;
+import com.march.debug.Utils;
 import com.march.debug.base.BaseDebugFragment;
 import com.march.debug.common.CopyRunnable;
 import com.march.lightadapter.LightAdapter;
@@ -63,16 +62,17 @@ public class ToolsFragment extends BaseDebugFragment {
                 startActivity(new Intent(Settings.ACTION_SETTINGS));
             }
         }));
-        try {
-            PackageInfo packageInfo = requireActivity().getPackageManager().getPackageInfo(requireActivity().getPackageName(), PackageManager.GET_INSTRUMENTATION);
-            mItemWraps.add(new ItemWrap("signMd5", SignUtils.getSign(requireActivity())));
-            mItemWraps.add(new ItemWrap("packageName", packageInfo.packageName));
-            mItemWraps.add(new ItemWrap("buildType", BuildConfig.BUILD_TYPE));
-            mItemWraps.add(new ItemWrap("versionCode", String.valueOf(packageInfo.versionCode)));
-            mItemWraps.add(new ItemWrap("versionName", packageInfo.versionName));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        mItemWraps.add(new ItemWrap("扫一扫", "点击扫一扫", new Runnable() {
+            @Override
+            public void run() {
+                Utils.openScan(requireActivity());
+            }
+        }));
+        mItemWraps.add(new ItemWrap("signMd5", SignUtils.getSign(requireActivity())));
+        mItemWraps.add(new ItemWrap("packageName", Common.BuildConfig.APPLICATION_ID));
+        mItemWraps.add(new ItemWrap("buildType", Common.BuildConfig.BUILD_TYPE));
+        mItemWraps.add(new ItemWrap("versionCode", Common.BuildConfig.VERSION_CODE));
+        mItemWraps.add(new ItemWrap("versionName", Common.BuildConfig.VERSION_NAME));
         final ActivityManager activityManager = (ActivityManager) requireActivity().getSystemService(Activity.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
         if (activityManager != null) {
@@ -128,5 +128,10 @@ public class ToolsFragment extends BaseDebugFragment {
         });
         LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(requireActivity()));
         LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

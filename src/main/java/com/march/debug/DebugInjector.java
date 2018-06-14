@@ -1,5 +1,8 @@
 package com.march.debug;
 
+import android.app.Activity;
+import android.support.annotation.NonNull;
+
 /**
  * CreateAt : 2018/6/13
  * Describe :
@@ -13,6 +16,16 @@ public interface DebugInjector {
         public boolean checkNetModel(String url) {
             return true;
         }
+
+        @Override
+        public void handleScanResult(@NonNull Activity activity, @NonNull CharSequence text) {
+
+        }
+
+        @Override
+        public Class getConfigClass() {
+            return BuildConfig.class;
+        }
     };
 
     /**
@@ -21,5 +34,8 @@ public interface DebugInjector {
      */
     boolean checkNetModel(String url);
 
+    void handleScanResult(@NonNull Activity activity,@NonNull CharSequence text);
+
+    Class getConfigClass();
 
 }

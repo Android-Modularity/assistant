@@ -22,7 +22,7 @@ public class Debugger {
     private DataSource    mDataSource;
     private boolean       mDebug;
     private RefWatcher    mRefWatcher;
-    private DebugInjector mDebugInjector;
+    private DebugInjector mInjector;
 
     private static Debugger sInst;
 
@@ -42,13 +42,14 @@ public class Debugger {
         mDataSource = new DataSource();
     }
 
-    public void init(Application app, boolean debug, DebugInjector injector) {
-        mDebugInjector = injector == null ? DebugInjector.EMPTY : injector;
-        mDebug = debug;
+    public static void init(Application app, boolean debug, DebugInjector injector) {
+        Debugger inst = getInst();
+        inst.mInjector = injector == null ? DebugInjector.EMPTY : injector;
+        inst.mDebug = debug;
         Stetho.initialize(Stetho.newInitializerBuilder(app)
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(app))
                 .build());
-        initLeakCanary(app);
+        inst.initLeakCanary(app);
         handleLog("debug", "日志采集初始化完毕");
     }
 
@@ -60,32 +61,28 @@ public class Debugger {
         mRefWatcher = LeakCanary.install(app);
     }
 
-    public void initOkHttp(OkHttpClient.Builder builder) {
+    public static void initOkHttp(OkHttpClient.Builder builder) {
         builder.addInterceptor(new StethoInterceptor());
         builder.addInterceptor(new DebugInterceptor());
     }
 
-    public void setDebug(boolean debug) {
-        this.mDebug = debug;
+    public static void handleLog(String tag, String logMsg) {
+        getInst().mDataSource.storeLog(new ConsoleModel(tag, logMsg));
+    }
+
+    public static void handleLog(int level, String tag, String logMsg) {
+        getInst().getDataSource().storeLog(new ConsoleModel(level, tag, logMsg));
+    }
+
+    public DataSource getDataSource() {
+        return mDataSource;
     }
 
     public RefWatcher getRefWatcher() {
         return mRefWatcher;
     }
 
-    public DebugInjector getDebugInjector() {
-        return mDebugInjector;
-    }
-
-    public void handleLog(String tag, String logMsg) {
-        mDataSource.storeLog(new ConsoleModel(tag, logMsg));
-    }
-
-    public void handleLog(int level, String tag, String logMsg) {
-        mDataSource.storeLog(new ConsoleModel(level, tag, logMsg));
-    }
-
-    public DataSource getDataSource() {
-        return mDataSource;
+    public DebugInjector getInjector() {
+        return mInjector;
     }
 }
