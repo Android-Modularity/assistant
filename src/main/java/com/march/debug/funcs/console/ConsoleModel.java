@@ -12,6 +12,9 @@ public class ConsoleModel {
     private String tag;
     private String msg;
 
+    public ConsoleModel() {
+    }
+
     public ConsoleModel(int level, String tag, String msg) {
         this.level = level;
         this.tag = tag;

@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 
 import com.march.debug.R;
-import com.march.debug.Utils;
+import com.march.debug.utils.Utils;
 import com.march.debug.base.BaseDebugActivity;
 import com.march.debug.common.CopyRunnable;
 import com.march.debug.funcs.browser.BrowserTextActivity;
@@ -28,6 +27,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import okhttp3.HttpUrl;
 
 /**
  * CreateAt : 2018/6/12
@@ -95,9 +96,10 @@ public class NetDetailActivity extends BaseDebugActivity {
 
     private void initDatas() {
         mItemWraps = new ArrayList<>();
-        mItemWraps.add(new ItemWrap("url", Utils.decode(mNetModel.getUrl().toString())));
-        mItemWraps.add(new ItemWrap("host", mNetModel.getUrl().host()));
-        mItemWraps.add(new ItemWrap("path", mNetModel.getUrl().encodedPath()));
+        HttpUrl httpUrl = mNetModel.parseHttpUrl();
+        mItemWraps.add(new ItemWrap("url", Utils.decode(httpUrl.toString())));
+        mItemWraps.add(new ItemWrap("host",httpUrl.host()));
+        mItemWraps.add(new ItemWrap("path", httpUrl.encodedPath()));
 
         mItemWraps.add(new ItemWrap("method", mNetModel.getMethod()));
         mItemWraps.add(new ItemWrap("code", String.valueOf(mNetModel.getCode())));
@@ -115,11 +117,11 @@ public class NetDetailActivity extends BaseDebugActivity {
                 }
             }));
         }
-        mItemWraps.add(new ItemWrap("query", mNetModel.getUrl().encodedQuery()));
-        Set<String> requestQueryKeys = mNetModel.getUrl().queryParameterNames();
+        mItemWraps.add(new ItemWrap("query", httpUrl.encodedQuery()));
+        Set<String> requestQueryKeys = httpUrl.queryParameterNames();
         if (requestQueryKeys != null && !requestQueryKeys.isEmpty()) {
             for (String key : requestQueryKeys) {
-                mItemWraps.add(new ItemWrap("<font color=\"#895684\">[Query]</font> " + key, Utils.decode(mNetModel.getUrl().queryParameter(key))));
+                mItemWraps.add(new ItemWrap("<font color=\"#895684\">[Query]</font> " + key, Utils.decode(httpUrl.queryParameter(key))));
             }
         }
         Map<String, String> requestHeaders = mNetModel.getRequestHeaders();

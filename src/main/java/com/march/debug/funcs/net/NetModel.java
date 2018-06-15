@@ -1,5 +1,7 @@
 package com.march.debug.funcs.net;
 
+import android.text.TextUtils;
+
 import java.util.Map;
 
 import okhttp3.HttpUrl;
@@ -12,11 +14,11 @@ import okhttp3.HttpUrl;
  */
 public class NetModel  {
 
-    private HttpUrl url;
-    private int     code;
-    private String  method;
-    private long    startTime;
-    private long     duration;
+    private String url;
+    private int    code;
+    private String method;
+    private long   startTime;
+    private long   duration;
 
     private Map<String, String> requestHeaders;
     private String              requestBody;
@@ -27,6 +29,9 @@ public class NetModel  {
     private long                responseSize;
     private String responseMsg;
 
+    public NetModel() {
+    }
+
     public String getResponseMsg() {
         return responseMsg;
     }
@@ -35,12 +40,21 @@ public class NetModel  {
         this.responseMsg = responseMsg;
     }
 
-    public HttpUrl getUrl() {
-        return url;
+    private HttpUrl httpUrl;
+
+    public HttpUrl parseHttpUrl() {
+        if (httpUrl == null) {
+            if (TextUtils.isEmpty(url)) {
+                url = "http://www.unknow.com/shayemeiyou?reason=解析失败的默认";
+            }
+            httpUrl = HttpUrl.parse(url);
+        }
+        return httpUrl;
     }
 
-    public void setUrl(HttpUrl url) {
-        this.url = url;
+    public void setHttpUrl(HttpUrl httpUrl) {
+        this.httpUrl = httpUrl;
+        this.url = httpUrl.toString();
     }
 
     public int getCode() {
@@ -123,4 +137,11 @@ public class NetModel  {
         this.responseSize = responseSize;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

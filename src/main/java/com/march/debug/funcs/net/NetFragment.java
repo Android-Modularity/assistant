@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.march.debug.Debugger;
-import com.march.debug.base.BaseDebugFragment;
 import com.march.debug.R;
+import com.march.debug.base.BaseDebugFragment;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -23,6 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import okhttp3.HttpUrl;
 
 /**
  * CreateAt : 2018/6/12
@@ -78,8 +80,9 @@ public class NetFragment extends BaseDebugFragment {
                         .append(String.format(Locale.getDefault(),"%.2f",data.getResponseSize() / 2014f)).append("kb")
                         .append("  ·  ")
                         .append(data.getDuration()).append("ms").toString();
-                holder.setText(R.id.path_tv, data.getUrl().encodedPath())
-                        .setText(R.id.host_tv, data.getUrl().host())
+                HttpUrl httpUrl = data.parseHttpUrl();
+                holder.setText(R.id.path_tv, httpUrl.encodedPath())
+                        .setText(R.id.host_tv, httpUrl.host())
                         .setText(R.id.detail_tv, detail);
             }
         };

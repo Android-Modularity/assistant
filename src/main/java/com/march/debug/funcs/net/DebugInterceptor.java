@@ -2,6 +2,7 @@ package com.march.debug.funcs.net;
 
 import android.support.annotation.NonNull;
 
+import com.march.common.utils.LgUtils;
 import com.march.debug.Debugger;
 
 import org.json.JSONException;
@@ -60,7 +61,7 @@ public final class DebugInterceptor implements Interceptor {
 
     // 打印 request
     private void logRequest(Request request, NetModel model) throws Exception {
-        model.setUrl(request.url());
+        model.setUrl(request.url().toString());
         model.setMethod(request.method());
         Map<String, String> reqHeaders = new HashMap<>();
         model.setRequestHeaders(reqHeaders);
@@ -133,7 +134,7 @@ public final class DebugInterceptor implements Interceptor {
         try {
            return new JSONObject(data).toString(2).replace("\\/", "/");
         } catch (JSONException e) {
-            e.printStackTrace();
+            LgUtils.e("不是json返回");
            return "json parse error \n "+ data;
         }
     }
