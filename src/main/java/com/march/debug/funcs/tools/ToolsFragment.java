@@ -11,16 +11,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.march.common.Common;
+import com.march.debug.Debugger;
 import com.march.debug.R;
-import com.march.debug.SignUtils;
-import com.march.debug.Utils;
 import com.march.debug.base.BaseDebugFragment;
 import com.march.debug.common.CopyRunnable;
+import com.march.debug.utils.SignUtils;
+import com.march.debug.utils.Utils;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -48,6 +50,7 @@ public class ToolsFragment extends BaseDebugFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tools_fragment, container, false);
         mRecyclerView = view.findViewById(R.id.data_rv);
+        mItemWraps = new ArrayList<>();
         initDatas();
         updateAdapter();
         return view;
@@ -55,7 +58,7 @@ public class ToolsFragment extends BaseDebugFragment {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initDatas() {
-        mItemWraps = new ArrayList<>();
+        mItemWraps.clear();
         mItemWraps.add(new ItemWrap("设置", "点击打开设置", new Runnable() {
             @Override
             public void run() {
@@ -68,6 +71,18 @@ public class ToolsFragment extends BaseDebugFragment {
                 Utils.openScan(requireActivity());
             }
         }));
+        mItemWraps.add(new ItemWrap("上次扫描", Debugger.getInst().getDataSource().getLastScanResult(), new Runnable() {
+            @Override
+            public void run() {
+                String result = Debugger.getInst().getDataSource().getLastScanResult();
+                if (!TextUtils.isEmpty(result)) {
+                    Debugger.getInst().getInjector().handleScanResult(requireActivity(), result);
+                }
+            }
+        }));
+        mItemWraps.add(new ItemWrap("Build.BRAND", android.os.Build.BRAND));
+        mItemWraps.add(new ItemWrap("Build.MODEL", android.os.Build.MODEL));
+        mItemWraps.add(new ItemWrap("Build.VERSION", android.os.Build.VERSION.RELEASE));
         mItemWraps.add(new ItemWrap("signMd5", SignUtils.getSign(requireActivity())));
         mItemWraps.add(new ItemWrap("packageName", Common.BuildConfig.APPLICATION_ID));
         mItemWraps.add(new ItemWrap("buildType", Common.BuildConfig.BUILD_TYPE));
@@ -108,6 +123,7 @@ public class ToolsFragment extends BaseDebugFragment {
     @Override
     public void onResume() {
         super.onResume();
+        initDatas();
         updateAdapter();
     }
 
