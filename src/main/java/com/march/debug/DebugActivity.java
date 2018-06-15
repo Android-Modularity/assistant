@@ -20,6 +20,7 @@ import com.march.debug.funcs.console.ConsoleFragment;
 import com.march.debug.funcs.files.FileFragment;
 import com.march.debug.funcs.net.NetFragment;
 import com.march.debug.funcs.tools.ToolsFragment;
+import com.march.debug.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,10 +35,10 @@ import java.util.Map;
  */
 public class DebugActivity extends BaseDebugActivity {
 
-    public static final String TOOL = "工具";
     public static final String CONSOLE = "控制台";
     public static final String NET     = "网络";
-    public static final String FILE     = "文件";
+    public static final String FILE    = "文件";
+    public static final String TOOL    = "工具";
 
     private ViewPager         mContentVp;
     private TabLayout         mTitleTabLy;
@@ -52,11 +53,10 @@ public class DebugActivity extends BaseDebugActivity {
         mTitleTabLy = findViewById(R.id.title_tably);
 
         mTabList = new ArrayList<>();
+        mTabList.add(TOOL);
         mTabList.add(CONSOLE);
         mTabList.add(NET);
         mTabList.add(FILE);
-        mTabList.add(TOOL);
-
 
         mDebugFragmentMaker = new BaseDebugFragment.DebugFragmentMaker() {
             @Override
@@ -168,6 +168,7 @@ public class DebugActivity extends BaseDebugActivity {
                     CharSequence text = clipboardManager.getText();
                     if (!TextUtils.isEmpty(text)) {
                         Debugger.getInst().getInjector().handleScanResult(this, text);
+                        Debugger.getInst().getDataSource().setLastScanResult(text.toString());
                     }
                 }
             }
