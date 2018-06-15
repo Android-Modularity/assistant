@@ -1,9 +1,23 @@
 package com.march.debug;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.march.common.impl.ActivityLifecycleCallback;
+import com.march.common.utils.DimensUtils;
+import com.march.common.view.DragLayout;
+import com.march.debug.base.BaseDebugActivity;
+import com.march.debug.common.StorageInfoManager;
 import com.march.debug.funcs.console.ConsoleModel;
 import com.march.debug.funcs.net.DebugInterceptor;
 import com.squareup.leakcanary.LeakCanary;
@@ -19,10 +33,11 @@ import okhttp3.OkHttpClient;
  */
 public class Debugger {
 
-    private DataSource    mDataSource;
-    private boolean       mDebug;
-    private RefWatcher    mRefWatcher;
-    private DebugInjector mInjector;
+    private DataSource         mDataSource;
+    private boolean            mDebug;
+    private RefWatcher         mRefWatcher;
+    private DebugInjector      mInjector;
+    private StorageInfoManager mStorageInfoManager;
 
     private static Debugger sInst;
 
@@ -40,9 +55,12 @@ public class Debugger {
     private Debugger() {
         mDebug = true;
         mDataSource = new DataSource();
+        mStorageInfoManager = new StorageInfoManager();
+        mStorageInfoManager.backUp();
     }
 
-    public static void init(Application app, boolean debug, DebugInjector injector) {
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    public static void init(Application app, final boolean debug, DebugInjector injector) {
         Debugger inst = getInst();
         inst.mInjector = injector == null ? DebugInjector.EMPTY : injector;
         inst.mDebug = debug;
@@ -51,6 +69,35 @@ public class Debugger {
                 .build());
         inst.initLeakCanary(app);
         handleLog("debug", "日志采集初始化完毕");
+
+        app.registerActivityLifecycleCallbacks(new ActivityLifecycleCallback() {
+            @Override
+            public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
+                if (activity instanceof BaseDebugActivity) {
+                    return;
+                }
+                DragLayout dragLayout = (DragLayout) activity.getLayoutInflater().inflate(R.layout.debug_view, null);
+                dragLayout.setLayoutParams(new FrameLayout.LayoutParams(DimensUtils.dp2px(40), DimensUtils.dp2px(40)));
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+                params.leftMargin = 50;
+                params.bottomMargin = 20;
+                dragLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activity.startActivity(new Intent(activity, DebugActivity.class));
+                    }
+                });
+                dragLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        activity.startActivity(new Intent(activity, DebugActivity.class));
+                        return true;
+                    }
+                });
+                ((ViewGroup) activity.getWindow().getDecorView()).addView(dragLayout, params);
+            }
+        });
     }
 
     private void initLeakCanary(Application app) {
@@ -78,11 +125,16 @@ public class Debugger {
         return mDataSource;
     }
 
+
     public RefWatcher getRefWatcher() {
         return mRefWatcher;
     }
 
     public DebugInjector getInjector() {
         return mInjector;
+    }
+
+    public StorageInfoManager getStorageInfoManager() {
+        return mStorageInfoManager;
     }
 }
