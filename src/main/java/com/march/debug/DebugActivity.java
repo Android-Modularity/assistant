@@ -149,13 +149,14 @@ public class DebugActivity extends BaseDebugActivity {
         if(mDebugFragment!=null && mDebugFragment.onBackPressed()){
             return;
         }
-        long curTime = System.currentTimeMillis();
-        if(curTime - lastTime < 1500){
-            super.onBackPressed();
-        }else {
-            lastTime = curTime;
-            ToastUtils.show("再按一次退出～");
-        }
+        super.onBackPressed();
+//        long curTime = System.currentTimeMillis();
+//        if(curTime - lastTime < 1500){
+//            super.onBackPressed();
+//        }else {
+//            lastTime = curTime;
+//            ToastUtils.show("再按一次退出～");
+//        }
     }
 
     @Override

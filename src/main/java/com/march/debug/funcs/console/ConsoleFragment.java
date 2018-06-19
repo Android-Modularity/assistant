@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.march.debug.base.BaseDebugFragment;
 import com.march.debug.Debugger;
 import com.march.debug.R;
+import com.march.debug.base.BaseDebugFragment;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -55,7 +55,9 @@ public class ConsoleFragment extends BaseDebugFragment {
         mLightAdapter = new LightAdapter<ConsoleModel>(getActivity(), logMsgs, R.layout.console_item) {
             @Override
             public void onBindView(LightHolder holder, ConsoleModel data, int pos, int type) {
-                holder.setText(R.id.tv, data.getTag()+" : "+data.getMsg());
+                if (data != null) {
+                    holder.setText(R.id.tv, data.getTag() + " : " + data.getMsg());
+                }
             }
         };
         LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(getActivity()));

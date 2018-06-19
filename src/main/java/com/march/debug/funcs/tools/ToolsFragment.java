@@ -76,6 +76,7 @@ public class ToolsFragment extends BaseDebugFragment {
             public void run() {
                 String result = Debugger.getInst().getDataSource().getLastScanResult();
                 if (!TextUtils.isEmpty(result)) {
+                    Debugger.getInst().getDataSource().setLastScanResult(result);
                     Debugger.getInst().getInjector().handleScanResult(requireActivity(), result);
                 }
             }

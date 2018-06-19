@@ -73,29 +73,33 @@ public class Debugger {
         app.registerActivityLifecycleCallbacks(new ActivityLifecycleCallback() {
             @Override
             public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
-                if (activity instanceof BaseDebugActivity) {
-                    return;
+                try {
+                    if (activity instanceof BaseDebugActivity) {
+                        return;
+                    }
+                    DragLayout dragLayout = (DragLayout) activity.getLayoutInflater().inflate(R.layout.debug_view, null);
+                    dragLayout.setLayoutParams(new FrameLayout.LayoutParams(DimensUtils.dp2px(40), DimensUtils.dp2px(40)));
+                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.gravity = Gravity.END | Gravity.BOTTOM;
+                    params.rightMargin = 100;
+                    params.bottomMargin = 100;
+                    dragLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            activity.startActivity(new Intent(activity, DebugActivity.class));
+                        }
+                    });
+                    dragLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            activity.startActivity(new Intent(activity, DebugActivity.class));
+                            return true;
+                        }
+                    });
+                    ((ViewGroup) activity.getWindow().getDecorView()).addView(dragLayout, params);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                DragLayout dragLayout = (DragLayout) activity.getLayoutInflater().inflate(R.layout.debug_view, null);
-                dragLayout.setLayoutParams(new FrameLayout.LayoutParams(DimensUtils.dp2px(40), DimensUtils.dp2px(40)));
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-                params.leftMargin = 50;
-                params.bottomMargin = 20;
-                dragLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        activity.startActivity(new Intent(activity, DebugActivity.class));
-                    }
-                });
-                dragLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        activity.startActivity(new Intent(activity, DebugActivity.class));
-                        return true;
-                    }
-                });
-                ((ViewGroup) activity.getWindow().getDecorView()).addView(dragLayout, params);
             }
         });
     }
