@@ -64,11 +64,13 @@ public class DataSource {
     }
 
     public DataSource copy() {
-        DataSource dataSource = new DataSource();
-        dataSource.mConsoleModels = new ArrayList<>(mConsoleModels);
-        dataSource.mNetModels = new ArrayList<>(mNetModels);
-        dataSource.mLastScanResult = mLastScanResult;
-        return dataSource;
+        synchronized (this) {
+            DataSource dataSource = new DataSource();
+            dataSource.mConsoleModels = new ArrayList<>(mConsoleModels);
+            dataSource.mNetModels = new ArrayList<>(mNetModels);
+            dataSource.mLastScanResult = mLastScanResult;
+            return dataSource;
+        }
     }
 
     public void backUp(DataSource source){

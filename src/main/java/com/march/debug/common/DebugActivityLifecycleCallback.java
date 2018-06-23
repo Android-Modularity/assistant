@@ -35,7 +35,7 @@ public class DebugActivityLifecycleCallback extends ActivityLifecycleCallback {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.END | Gravity.BOTTOM;
             params.rightMargin = 100;
-            params.bottomMargin = 100;
+            params.bottomMargin = 150;
             dragLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
