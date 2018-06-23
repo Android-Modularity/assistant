@@ -17,7 +17,7 @@ dependencies {
     implementation libs.stetho
     implementation libs.stetho_okhttp3
 //    implementation project(':common')
-    implementation project(path: ':common')
+    implementation libs.common
     implementation libs.lightadapter
     implementation libs.gson
 }
