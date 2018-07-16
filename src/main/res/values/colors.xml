@@ -4,7 +4,11 @@
     <color name="black">#1a1a1a</color>
     <color name="white">#f7f3f3</color>
 
+<<<<<<< HEAD
     <color name="bg_color">#f7f3f3</color>
+=======
+    <color name="debug_bg_color">#fff</color>
+>>>>>>> 78faaf6fe4c9c47c013261f97e5016a03d28fe61
     <color name="text_first_color">#1a1a1a</color>
     <color name="text_second_color">#3a3a3a</color>
     <color name="text_third_color">#5a5a5a</color>

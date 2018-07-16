@@ -3,7 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@color/bg_color"
+=======
+    android:background="@color/debug_bg_color"
+>>>>>>> 78faaf6fe4c9c47c013261f97e5016a03d28fe61
     android:orientation="vertical">
 
     <View
