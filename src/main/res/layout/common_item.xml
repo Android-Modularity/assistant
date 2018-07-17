@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-<<<<<<< HEAD
     android:background="@color/bg_color"
-=======
-    android:background="@color/debug_bg_color"
->>>>>>> 78faaf6fe4c9c47c013261f97e5016a03d28fe61
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

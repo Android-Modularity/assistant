@@ -4,6 +4,7 @@ apply plugin: 'com.android.library'
 // apply from: 'https://coding.net/u/devlab/p/Resource/git/raw/master/android/project.gradle'
 def version = rootProject.ext.version
 def libs = rootProject.ext.libs
+
 android {
     compileSdkVersion version.compileSdkVersion
 }
@@ -16,12 +17,7 @@ dependencies {
     implementation libs.okhttp3
     implementation libs.stetho
     implementation libs.stetho_okhttp3
-//    implementation project(':common')
-<<<<<<< HEAD
     implementation project(path: ':common')
-=======
-    implementation libs.common
->>>>>>> 78faaf6fe4c9c47c013261f97e5016a03d28fe61
     implementation libs.lightadapter
     implementation libs.gson
 }

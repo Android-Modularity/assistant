@@ -1,9 +1,9 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.march.debug">
+    package="com.march.assistant">
 
     <application>
-        <activity android:name=".DebugActivity"/>
+        <activity android:name=".AssistantActivity"/>
 
         <activity android:name=".funcs.net.NetDetailActivity"/>
 
