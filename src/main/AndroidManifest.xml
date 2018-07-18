@@ -1,5 +1,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.march.assistant">
 
     <application>
@@ -15,7 +16,8 @@
         </activity>
         <activity
             android:name=".funcs.browser.BrowserImgActivity">
-            <intent-filter>
+            <intent-filter
+                tools:ignore="AppLinkUrlError">
                 <!--接受单个文件分享-->
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

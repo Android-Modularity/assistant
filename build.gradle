@@ -7,6 +7,8 @@ def libs = rootProject.ext.libs
 
 android {
     compileSdkVersion version.compileSdkVersion
+    defaultConfig {
+    }
 }
 
 dependencies {
@@ -17,7 +19,17 @@ dependencies {
     implementation libs.okhttp3
     implementation libs.stetho
     implementation libs.stetho_okhttp3
-    implementation project(path: ':common')
+    implementation libs.common
     implementation libs.lightadapter
     implementation libs.gson
+}
+
+apply plugin: 'bintray-release'
+publish {
+    userOrg = 'zfy'
+    groupId = 'com.zfy'
+    artifactId = 'assistant'
+    publishVersion = '0.0.1'
+    desc = 'assistant'
+    website = 'https://github.com/Android-Modularity/assistant'
 }
