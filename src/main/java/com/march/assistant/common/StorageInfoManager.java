@@ -54,13 +54,13 @@ public class StorageInfoManager {
         @Override
         public void run() {
             try {
-                File debugFile = new File(Common.getContext().getCacheDir(), "debug.log");
+                File debugFile = new File(Common.getInst().getContext().getCacheDir(), "debug.log");
                 if (FileUtils.isNotExist(debugFile)) {
                     return;
                 }
                 String json = StreamUtils.saveStreamToString(new FileInputStream(debugFile));
                 if (!TextUtils.isEmpty(json)) {
-                    DataSource dataSource = Common.Injector.getJsonParser().toObj(json, DataSource.class);
+                    DataSource dataSource = Common.getInst().getJsonAdapter().toObj(json, DataSource.class);
                     Assistant.getInst().getDataSource().backUp(dataSource);
                 }
             } catch (FileNotFoundException e) {
@@ -77,10 +77,10 @@ public class StorageInfoManager {
         public void run() {
             try {
                 DataSource ds = Assistant.getInst().getDataSource().copy();
-                String json = Common.Injector.getJsonParser().toJson(ds);
+                String json = Common.getInst().getJsonAdapter().toJson(ds);
                 if (!TextUtils.isEmpty(json)) {
                     mBais = new ByteArrayInputStream(json.getBytes());
-                    StreamUtils.saveStreamToFile(new File(Common.getContext().getCacheDir(), "debug.log"), mBais);
+                    StreamUtils.saveStreamToFile(new File(Common.getInst().getContext().getCacheDir(), "debug.log"), mBais);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

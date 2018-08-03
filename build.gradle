@@ -1,26 +1,17 @@
-apply plugin: 'com.android.library'
 
-// project/build.gradle
-// apply from: 'https://coding.net/u/devlab/p/Resource/git/raw/master/android/project.gradle'
-def version = rootProject.ext.version
 def libs = rootProject.ext.libs
-
-android {
-    compileSdkVersion version.compileSdkVersion
-    defaultConfig {
-    }
-}
+def business = rootProject.ext.business
 
 dependencies {
-    implementation libs.appcompat_v7
-    implementation libs.design
-    releaseImplementation libs.leakCanaryRelease
-    debugImplementation libs.leakCanaryDebug
-    implementation libs.okhttp3
+    compileOnly business.common
+    compileOnly libs.appcompat_v7
+    compileOnly libs.design
+    compileOnly libs.okhttp3
+    compileOnly libs.lightadapter
+    releaseApi libs.leakCanaryRelease
+    debugApi libs.leakCanaryDebug
     implementation libs.stetho
     implementation libs.stetho_okhttp3
-    implementation libs.common
-    implementation libs.lightadapter
     implementation libs.gson
 }
 

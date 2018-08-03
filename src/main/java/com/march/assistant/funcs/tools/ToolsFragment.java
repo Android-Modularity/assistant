@@ -23,6 +23,7 @@ import com.march.assistant.common.CopyRunnable;
 import com.march.assistant.utils.SignUtils;
 import com.march.assistant.utils.Utils;
 import com.march.common.Common;
+import com.march.common.model.CommBuildCfg;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -81,14 +82,15 @@ public class ToolsFragment extends BaseAssistantFragment {
                 }
             }
         }));
+        CommBuildCfg buildConfig = Common.getInst().getBuildConfig();
         mItemWraps.add(new ItemWrap("Build.BRAND", android.os.Build.BRAND));
         mItemWraps.add(new ItemWrap("Build.MODEL", android.os.Build.MODEL));
         mItemWraps.add(new ItemWrap("Build.VERSION", android.os.Build.VERSION.RELEASE));
         mItemWraps.add(new ItemWrap("signMd5", SignUtils.getSign(requireActivity())));
-        mItemWraps.add(new ItemWrap("packageName", Common.BuildConfig.APPLICATION_ID));
-        mItemWraps.add(new ItemWrap("buildType", Common.BuildConfig.BUILD_TYPE));
-        mItemWraps.add(new ItemWrap("versionCode", Common.BuildConfig.VERSION_CODE));
-        mItemWraps.add(new ItemWrap("versionName", Common.BuildConfig.VERSION_NAME));
+        mItemWraps.add(new ItemWrap("packageName",buildConfig.APPLICATION_ID));
+        mItemWraps.add(new ItemWrap("buildType", buildConfig.BUILD_TYPE));
+        mItemWraps.add(new ItemWrap("versionCode", buildConfig.VERSION_CODE));
+        mItemWraps.add(new ItemWrap("versionName", buildConfig.VERSION_NAME));
         final ActivityManager activityManager = (ActivityManager) requireActivity().getSystemService(Activity.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
         if (activityManager != null) {

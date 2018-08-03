@@ -16,10 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.march.common.Common;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantFragment;
 import com.march.assistant.funcs.browser.BrowserTextActivity;
+import com.march.common.Common;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -137,7 +137,7 @@ public class FileFragment extends BaseAssistantFragment {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-            uri = FileProvider.getUriForFile(requireActivity(), Common.BuildConfig.APPLICATION_ID + ".fileProvider", file);
+            uri = FileProvider.getUriForFile(requireActivity(), Common.getInst().getBuildConfig().APPLICATION_ID + ".fileProvider", file);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }else{
             uri = Uri.fromFile(file);
