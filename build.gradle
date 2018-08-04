@@ -9,8 +9,9 @@ dependencies {
     compileOnly libs.okhttp3
     compileOnly libs.lightadapter
     releaseApi libs.leakCanaryRelease
-    fortestApi libs.leakCanaryRelease
     debugApi libs.leakCanaryDebug
+    debugApi libs.leakCanaryDebug
+    releaseApi libs.leakCanaryRelease
     implementation libs.stetho
     implementation libs.stetho_okhttp3
     implementation libs.gson
