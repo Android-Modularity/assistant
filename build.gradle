@@ -3,13 +3,12 @@ def libs = rootProject.ext.libs
 def business = rootProject.ext.business
 
 dependencies {
-    compileOnly business.common
-    compileOnly libs.appcompat_v7
-    compileOnly libs.design
-    compileOnly libs.okhttp3
-    compileOnly libs.lightadapter
-    releaseApi libs.leakCanaryRelease
-    debugApi libs.leakCanaryDebug
+    api libs.leakCanaryDebug
+    implementation business.common
+    implementation libs.appcompat_v7
+    implementation libs.design
+    implementation libs.okhttp3
+    implementation libs.lightadapter
     implementation libs.stetho
     implementation libs.stetho_okhttp3
     implementation libs.gson

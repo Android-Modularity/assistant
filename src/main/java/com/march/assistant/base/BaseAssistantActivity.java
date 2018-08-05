@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.march.common.utils.immersion.ImmersionStatusBarUtils;
-
 /**
  * CreateAt : 2018/6/13
  * Describe :

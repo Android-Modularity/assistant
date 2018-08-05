@@ -70,11 +70,12 @@ public class Assistant {
                 .instanceField("com.android.internal.policy.PhoneWindow$DecorView", "mContext")
                 .instanceField("android.support.v7.widget.SearchView$SearchAutoComplete", "mContext")
                 .build();
-
+//
         mRefWatcher = LeakCanary.refWatcher(app)
                 .listenerServiceClass(DisplayLeakService.class)
                 .excludedRefs(excludedRefs)
                 .buildAndInstall();
+
     }
 
     public static void initOkHttp(OkHttpClient.Builder builder) {
