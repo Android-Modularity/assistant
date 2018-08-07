@@ -60,26 +60,13 @@ public class ToolsFragment extends BaseAssistantFragment {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initDatas() {
         mItemWraps.clear();
-        mItemWraps.add(new ItemWrap("设置", "点击打开设置", new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(Settings.ACTION_SETTINGS));
-            }
-        }));
-        mItemWraps.add(new ItemWrap("扫一扫", "点击扫一扫", new Runnable() {
-            @Override
-            public void run() {
-                Utils.openScan(requireActivity());
-            }
-        }));
-        mItemWraps.add(new ItemWrap("上次扫描", Assistant.getInst().getDataSource().getLastScanResult(), new Runnable() {
-            @Override
-            public void run() {
-                String result = Assistant.getInst().getDataSource().getLastScanResult();
-                if (!TextUtils.isEmpty(result)) {
-                    Assistant.getInst().getDataSource().setLastScanResult(result);
-                    Assistant.getInst().getInitCfg().injectAdapter.handleScanResult(requireActivity(), result);
-                }
+        mItemWraps.add(new ItemWrap("设置", "点击打开设置", () -> startActivity(new Intent(Settings.ACTION_SETTINGS))));
+        mItemWraps.add(new ItemWrap("扫一扫", "点击扫一扫", () -> Utils.openScan(requireActivity())));
+        mItemWraps.add(new ItemWrap("上次扫描", Assistant.getInst().getDataSource().getLastScanResult(), () -> {
+            String result = Assistant.getInst().getDataSource().getLastScanResult();
+            if (!TextUtils.isEmpty(result)) {
+                Assistant.getInst().getDataSource().setLastScanResult(result);
+                Assistant.getInst().getInitCfg().injectAdapter.handleScanResult(requireActivity(), result);
             }
         }));
         CommBuildCfg buildConfig = Common.getInst().getBuildConfig();

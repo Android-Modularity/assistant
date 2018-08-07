@@ -21,6 +21,7 @@ import com.march.assistant.funcs.files.FileFragment;
 import com.march.assistant.funcs.net.NetFragment;
 import com.march.assistant.funcs.tools.ToolsFragment;
 import com.march.assistant.utils.Utils;
+import com.march.common.extensions.BarUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,6 +96,7 @@ public class AssistantActivity extends BaseAssistantActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assistant_activity);
+        BarUI.setStatusBarLightMode(this);
         mFragmentMakeAdapterWrap = new FragmentMakeAdapterWrap();
         mContentVp = findViewById(R.id.content_pager);
         mTitleTabLy = findViewById(R.id.title_tably);
