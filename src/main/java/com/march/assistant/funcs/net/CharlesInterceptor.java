@@ -12,11 +12,14 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -78,23 +81,57 @@ public final class CharlesInterceptor implements Interceptor {
             if (requestBody.contentLength() != -1) {
                 reqHeaders.put("Content-Length:", String.valueOf(requestBody.contentLength()));
             }
-            Buffer buffer = new Buffer();
-            requestBody.writeTo(buffer);
-            Charset charset = UTF8;
-            MediaType contentType = requestBody.contentType();
-            if (contentType != null) {
-                charset = contentType.charset(UTF8);
-            }
-            if (isPlaintext(buffer) && charset != null) {
-                String body = buffer.readString(charset);
-                model.setRequestBody(toJson(body));
-                model.setRequestSize(body.getBytes().length);
+            if (requestBody instanceof FormBody) {
+                FormBody formBody = (FormBody) requestBody;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < formBody.size(); i++) {
+                    sb.append(formBody.name(i)).append("=").append(formBody.value(i)).append("&");
+                }
+                model.setPostForms(sb.toString());
+            } else if (requestBody instanceof MultipartBody) {
+                MultipartBody multipartBody = (MultipartBody) requestBody;
+                StringBuilder sb = new StringBuilder();
+                sb.append("boundary").append(" -> ").append(multipartBody.boundary()).append("\n\n");
+                sb.append("type").append(" -> ").append(multipartBody.type()).append("\n\n");
+                sb.append("mediaType").append(" -> ").append(multipartBody.contentType()).append("\n\n");
+                try {
+                    sb.append("contentLength").append(" -> ").append(multipartBody.contentLength()).append("\n\n");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                List<MultipartBody.Part> parts = multipartBody.parts();
+                for (MultipartBody.Part part : parts) {
+                    sb.append("part[").append(parts.indexOf(part)).append("] = ").append("\n\n");
+                    sb.append("contentLength = ").append(part.body().contentLength()).append("\n\n");
+                    Headers partHeaders = part.headers();
+                    if (partHeaders != null) {
+                        for (int i = 0; i < partHeaders.size(); i++) {
+                            sb.append(partHeaders.name(i)).append(" -> ").append(partHeaders.value(i)).append("\n\n");
+                        }
+                    }
+                    sb.append("\n\n\n");
+                }
+                model.setRequestBody(sb.toString());
             } else {
-                model.setRequestBody("二进制body");
-                model.setRequestSize(buffer.size());
+                Buffer buffer = new Buffer();
+                requestBody.writeTo(buffer);
+                Charset charset = UTF8;
+                MediaType contentType = requestBody.contentType();
+                if (contentType != null) {
+                    charset = contentType.charset(UTF8);
+                }
+                if (isPlaintext(buffer) && charset != null) {
+                    String body = buffer.readString(charset);
+                    model.setRequestBody(toJson(body));
+                    model.setRequestSize(body.getBytes().length);
+                } else {
+                    model.setRequestBody("二进制body");
+                    model.setRequestSize(buffer.size());
+                }
             }
         }
     }
+
 
 
     // 打印 response
@@ -108,7 +145,7 @@ public final class CharlesInterceptor implements Interceptor {
             respHeaders.put(headers.name(i), headers.value(i));
         }
         ResponseBody responseBody = response.body();
-        model.setRequestBody("");
+        model.setResponseBody("");
         if (responseBody != null) {
             BufferedSource source = responseBody.source();
             source.request(Long.MAX_VALUE); // Buffer the entire body.

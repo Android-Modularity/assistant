@@ -9,10 +9,10 @@ import android.text.Html;
 import android.text.TextUtils;
 
 import com.march.assistant.R;
-import com.march.assistant.utils.Utils;
 import com.march.assistant.base.BaseAssistantActivity;
 import com.march.assistant.common.CopyRunnable;
 import com.march.assistant.funcs.browser.BrowserTextActivity;
+import com.march.assistant.utils.Utils;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -59,18 +59,22 @@ public class NetDetailActivity extends BaseAssistantActivity {
         String   title;
         String   text;
         Runnable runnable ;
-
+        String desc;
 
         public ItemWrap(String title, String text, Runnable runnable) {
-            this.title = title;
-            this.text = text;
+            this.desc = concat(title, text);
             this.runnable = runnable;
         }
 
         public ItemWrap(String title, String text) {
             this.title = title;
             this.text = text;
+            this.desc = concat(title, text);
             this.runnable = new CopyRunnable(NetDetailActivity.this, this.text);
+        }
+
+        public ItemWrap(String desc) {
+            this.desc = desc;
         }
     }
 
@@ -94,6 +98,10 @@ public class NetDetailActivity extends BaseAssistantActivity {
         return String.format(Locale.getDefault(), "%.2f", size / 2014f) + "kb";
     }
 
+    private String concat(String title, String content) {
+        return title + "  :  " + content;
+    }
+
     private void initDatas() {
         mItemWraps = new ArrayList<>();
         HttpUrl httpUrl = mNetModel.parseHttpUrl();
@@ -105,38 +113,12 @@ public class NetDetailActivity extends BaseAssistantActivity {
         mItemWraps.add(new ItemWrap("code", String.valueOf(mNetModel.getCode())));
         mItemWraps.add(new ItemWrap("start time", mTimeFormat.format(new Date(mNetModel.getStartTime()))));
         mItemWraps.add(new ItemWrap("duration", mNetModel.getDuration() + "ms"));
-        mItemWraps.add(new ItemWrap("---------------", "request ------------------------"));
-        mItemWraps.add(new ItemWrap("request size", getSizeFormat(mNetModel.getRequestSize())));
-        if (TextUtils.isEmpty(mNetModel.getRequestBody())) {
-            mItemWraps.add(new ItemWrap("request body", "没有内容"));
-        } else {
-            mItemWraps.add(new ItemWrap("request body", "点击查看内容", new Runnable() {
-                @Override
-                public void run() {
-                    BrowserTextActivity.startActivity(NetDetailActivity.this, mNetModel.getRequestBody());
-                }
-            }));
-        }
-        mItemWraps.add(new ItemWrap("query", httpUrl.encodedQuery()));
-        Set<String> requestQueryKeys = httpUrl.queryParameterNames();
-        if (requestQueryKeys != null && !requestQueryKeys.isEmpty()) {
-            for (String key : requestQueryKeys) {
-                mItemWraps.add(new ItemWrap("<font color=\"#895684\">[Query]</font> " + key, Utils.decode(httpUrl.queryParameter(key))));
-            }
-        }
-        Map<String, String> requestHeaders = mNetModel.getRequestHeaders();
-        if (requestHeaders != null && !requestHeaders.isEmpty()) {
-            for (String key : requestHeaders.keySet()) {
-                mItemWraps.add(new ItemWrap("<font color=\"#134044\">[Header]</font> " + key, requestHeaders.get(key)));
-            }
-        }
-
-        mItemWraps.add(new ItemWrap("---------------", "response ------------------------"));
+        mItemWraps.add(new ItemWrap("----------------------- response ------------------------"));
         mItemWraps.add(new ItemWrap("response size", getSizeFormat(mNetModel.getResponseSize())));
         Map<String, String> responseHeaders = mNetModel.getResponseHeaders();
         if (responseHeaders != null && !responseHeaders.isEmpty()) {
             for (String key : responseHeaders.keySet()) {
-                mItemWraps.add(new ItemWrap("<font color=\"#134044\">[Header]</font> " + key, responseHeaders.get(key)));
+                mItemWraps.add(new ItemWrap("[Header]" + key, responseHeaders.get(key)));
             }
         }
         if (TextUtils.isEmpty(mNetModel.getResponseBody())) {
@@ -149,6 +131,28 @@ public class NetDetailActivity extends BaseAssistantActivity {
                 }
             }));
         }
+        mItemWraps.add(new ItemWrap("----------------------- request ------------------------"));
+        mItemWraps.add(new ItemWrap("request size", getSizeFormat(mNetModel.getRequestSize())));
+        if (TextUtils.isEmpty(mNetModel.getRequestBody())) {
+            mItemWraps.add(new ItemWrap("request body", "没有内容"));
+        } else {
+            mItemWraps.add(new ItemWrap("request body", "点击查看内容", () ->
+                    BrowserTextActivity.startActivity(NetDetailActivity.this, mNetModel.getRequestBody())));
+        }
+        mItemWraps.add(new ItemWrap("form", mNetModel.getPostForms()));
+        mItemWraps.add(new ItemWrap("query", httpUrl.encodedQuery()));
+        Set<String> requestQueryKeys = httpUrl.queryParameterNames();
+        if (requestQueryKeys != null && !requestQueryKeys.isEmpty()) {
+            for (String key : requestQueryKeys) {
+                mItemWraps.add(new ItemWrap("[Query]" + key, Utils.decode(httpUrl.queryParameter(key))));
+            }
+        }
+        Map<String, String> requestHeaders = mNetModel.getRequestHeaders();
+        if (requestHeaders != null && !requestHeaders.isEmpty()) {
+            for (String key : requestHeaders.keySet()) {
+                mItemWraps.add(new ItemWrap("[Header]" + key, requestHeaders.get(key)));
+            }
+        }
     }
 
 
@@ -156,7 +160,7 @@ public class NetDetailActivity extends BaseAssistantActivity {
         mLightAdapter = new LightAdapter<ItemWrap>(this, mItemWraps, R.layout.common_item) {
             @Override
             public void onBindView(LightHolder holder, ItemWrap data, int pos, int type) {
-                holder.setText(R.id.content_tv, Html.fromHtml(data.title + " : " + data.text));
+                holder.setText(R.id.content_tv, Html.fromHtml(data.desc, null, null));
             }
         };
         mLightAdapter.setOnItemListener(new SimpleItemListener<ItemWrap>() {

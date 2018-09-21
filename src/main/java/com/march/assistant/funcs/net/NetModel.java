@@ -22,6 +22,7 @@ public class NetModel  {
 
     private Map<String, String> requestHeaders;
     private String              requestBody;
+    private String postForms;
     private long                requestSize;
 
     private Map<String, String> responseHeaders;
@@ -55,6 +56,15 @@ public class NetModel  {
     public void setHttpUrl(HttpUrl httpUrl) {
         this.httpUrl = httpUrl;
         this.url = httpUrl.toString();
+    }
+
+
+    public String getPostForms() {
+        return postForms;
+    }
+
+    public void setPostForms(String postForms) {
+        this.postForms = postForms;
     }
 
     public int getCode() {

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.march.assistant.Assistant;
 import com.march.assistant.R;
@@ -37,6 +38,7 @@ public class NetFragment extends BaseAssistantFragment {
     public static WeakReference<NetModel> mCurNetModelRef = new WeakReference<>(null);
 
     private RecyclerView           mRecyclerView;
+    private Button mClearBtn;
     private LightAdapter<NetModel> mLightAdapter;
     private SimpleDateFormat       mTimeFormat;
 
@@ -45,6 +47,12 @@ public class NetFragment extends BaseAssistantFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.net_fragment, container, false);
         mRecyclerView = view.findViewById(R.id.data_rv);
+        mClearBtn = view.findViewById(R.id.btn);
+        mClearBtn.setOnClickListener(v -> {
+            Assistant.getInst().getDataSource().getNetModels().clear();
+            mLightAdapter.getDatas().clear();
+            mLightAdapter.update().notifyDataSetChanged();
+        });
         mTimeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         updateAdapter();
         return view;
