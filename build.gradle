@@ -1,11 +1,8 @@
-
-def libs = rootProject.ext.libs
-def business = rootProject.ext.business
-
 dependencies {
     api libs.leakCanaryDebug
-    implementation business.common
+    implementation libs.common
     implementation libs.appcompat_v7
+    implementation libs.recyclerView_v7
     implementation libs.design
     implementation libs.okhttp3
     implementation libs.lightadapter
@@ -14,12 +11,12 @@ dependencies {
     implementation libs.gson
 }
 
-apply plugin: 'bintray-release'
-publish {
-    userOrg = 'zfy'
-    groupId = 'com.zfy'
-    artifactId = 'assistant'
-    publishVersion = '0.0.1'
-    desc = 'assistant'
-    website = 'https://github.com/Android-Modularity/assistant'
-}
+//apply plugin: 'bintray-release'
+//publish {
+//    userOrg = 'zfy'
+//    groupId = 'com.zfy'
+//    artifactId = 'assistant'
+//    publishVersion = '0.0.1'
+//    desc = 'assistant'
+//    website = 'https://github.com/Android-Modularity/assistant'
+//}
