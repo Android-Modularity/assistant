@@ -1,10 +1,9 @@
 
 def libs = rootProject.ext.libs
-def business = rootProject.ext.business
 
 dependencies {
     api libs.leakCanaryDebug
-    implementation business.common
+    implementation project(':common')
     implementation libs.appcompat_v7
     implementation libs.design
     implementation libs.okhttp3
