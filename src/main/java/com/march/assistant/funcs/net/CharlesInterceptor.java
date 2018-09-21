@@ -2,8 +2,8 @@ package com.march.assistant.funcs.net;
 
 import android.support.annotation.NonNull;
 
-import com.march.common.utils.LgUtils;
 import com.march.assistant.Assistant;
+import com.march.common.utils.LgUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +42,7 @@ public final class CharlesInterceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         try {
             Request request = chain.request();
-            if (!Assistant.getInst().getInitCfg().injectAdapter.isInterceptRequest(request.url().toString())) {
+            if (!Assistant.getInst().getOkHttpInterceptAdapter().shouldIntercept(request.url().toString())) {
                 return chain.proceed(chain.request());
             }
             NetModel model = new NetModel();

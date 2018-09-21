@@ -66,7 +66,7 @@ public class ToolsFragment extends BaseAssistantFragment {
             String result = Assistant.getInst().getDataSource().getLastScanResult();
             if (!TextUtils.isEmpty(result)) {
                 Assistant.getInst().getDataSource().setLastScanResult(result);
-                Assistant.getInst().getInitCfg().injectAdapter.handleScanResult(requireActivity(), result);
+                Assistant.getInst().getScanResultAdapter().onScanResult(requireActivity(), result);
             }
         }));
         AppBuildConfig buildConfig = Common.getInst().getBuildConfig();

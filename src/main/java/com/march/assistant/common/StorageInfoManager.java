@@ -41,7 +41,7 @@ public class StorageInfoManager {
         if (curTime - mLastStoreTime > TIME_LIMIT) {
             mLastStoreTime = curTime;
             mExecutorService.execute(mStorageRunnable);
-            Assistant.handleLog("storage", DateFormatUtils.format(DateFormatUtils.PATTERN_HHmmss, curTime) + "落盘一次");
+            // Assistant.handleLog("storage", DateFormatUtils.format(DateFormatUtils.PATTERN_HHmmss, curTime) + "落盘一次");
         }
     }
 

@@ -28,7 +28,7 @@ public class AssistantActivityLifeCallback extends ActivityLifecycleCallback {
     public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
         try {
-            if (!Assistant.getInst().getInitCfg().showDebugBtn) {
+            if (!Assistant.getInst().getConfig().isShowDebugBtn()) {
                 return;
             }
             if (activity.getClass().getSimpleName().contains("alibc")) {

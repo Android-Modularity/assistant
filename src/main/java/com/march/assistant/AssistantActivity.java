@@ -52,10 +52,11 @@ public class AssistantActivity extends BaseAssistantActivity {
         private  List<String> titles;
 
         public FragmentMakeAdapterWrap() {
-            if (Assistant.getInst().getInitCfg().fragmentMakeAdapter == null) {
+            FragmentMakeAdapter adapter = Assistant.getInst().getFragmentMakeAdapter();
+            if (adapter == null) {
                 titles = new ArrayList<>();
             } else {
-                titles = new ArrayList<>(Assistant.getInst().getInitCfg().fragmentMakeAdapter.getTitles());
+                titles = new ArrayList<>(adapter.getTitles());
             }
             titles = new ArrayList<>();
             titles.add(TOOL);
@@ -86,8 +87,9 @@ public class AssistantActivity extends BaseAssistantActivity {
                     fragment = new FileFragment();
                     break;
             }
-            if (fragment == null && Assistant.getInst().getInitCfg().fragmentMakeAdapter != null) {
-                fragment = Assistant.getInst().getInitCfg().fragmentMakeAdapter.makeFragment(title);
+            FragmentMakeAdapter adapter = Assistant.getInst().getFragmentMakeAdapter();
+            if (fragment == null && adapter != null) {
+                fragment = adapter.makeFragment(title);
             }
             if (fragment != null) {
                 fragment.setTitle(title);
@@ -177,14 +179,12 @@ public class AssistantActivity extends BaseAssistantActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (Utils.SCAN_REQ_CODE == requestCode) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                if (clipboardManager != null) {
-                    CharSequence text = clipboardManager.getText();
-                    if (!TextUtils.isEmpty(text)) {
-                        Assistant.getInst().getInitCfg().injectAdapter.handleScanResult(this, text);
-                        Assistant.getInst().getDataSource().setLastScanResult(text.toString());
-                    }
+            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            if (clipboardManager != null) {
+                CharSequence text = clipboardManager.getText();
+                if (!TextUtils.isEmpty(text)) {
+                    Assistant.getInst().getScanResultAdapter().onScanResult(this, text);
+                    Assistant.getInst().getDataSource().setLastScanResult(text.toString());
                 }
             }
         }

@@ -1,14 +1,14 @@
 package com.march.assistant;
 
-import android.annotation.TargetApi;
 import android.app.Application;
-import android.os.Build;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.march.assistant.adapter.FragmentMakeAdapter;
+import com.march.assistant.adapter.OkHttpInterceptAdapter;
+import com.march.assistant.adapter.ScanResultAdapter;
 import com.march.assistant.common.AssistantActivityLifeCallback;
 import com.march.assistant.common.StorageInfoManager;
-import com.march.assistant.funcs.console.ConsoleModel;
 import com.march.assistant.funcs.net.CharlesInterceptor;
 import com.squareup.leakcanary.AndroidExcludedRefs;
 import com.squareup.leakcanary.DisplayLeakService;
@@ -29,7 +29,12 @@ public class Assistant {
     private DataSource         mDataSource;
     private RefWatcher         mRefWatcher;
     private StorageInfoManager mStorageInfoManager;
-    private InitConfig mInitCfg;
+
+    private InitConfig mConfig;
+    private FragmentMakeAdapter fragmentMakeAdapter;
+    private ScanResultAdapter scanResultAdapter;
+    private OkHttpInterceptAdapter okHttpInterceptAdapter;
+
     private static Assistant sInst;
 
     public static Assistant getInst() {
@@ -46,17 +51,17 @@ public class Assistant {
     private Assistant() {
         mDataSource = new DataSource();
         mStorageInfoManager = new StorageInfoManager();
-        mStorageInfoManager.backUp();
+        // mStorageInfoManager.backUp();
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static void init(Application app, InitConfig cfg) {
         Assistant inst = getInst();
-        inst.mInitCfg = cfg;
+        inst.mConfig = cfg;
+        inst.fragmentMakeAdapter = cfg.fragmentMakeAdapter;
+        inst.scanResultAdapter = cfg.scanResultAdapter;
+        inst.okHttpInterceptAdapter = cfg.okHttpInterceptAdapter;
         Stetho.initializeWithDefaults(app);
         inst.initLeakCanary(app);
-        handleLog("debug", "日志采集初始化完毕");
-
         app.registerActivityLifecycleCallbacks(new AssistantActivityLifeCallback());
     }
 
@@ -83,18 +88,9 @@ public class Assistant {
         builder.addInterceptor(new CharlesInterceptor());
     }
 
-    public static void handleLog(String tag, String logMsg) {
-        getInst().mDataSource.storeLog(new ConsoleModel(tag, logMsg));
-    }
-
-    public static void handleLog(int level, String tag, String logMsg) {
-        getInst().getDataSource().storeLog(new ConsoleModel(level, tag, logMsg));
-    }
-
     public DataSource getDataSource() {
         return mDataSource;
     }
-
 
     public RefWatcher getRefWatcher() {
         return mRefWatcher;
@@ -104,7 +100,19 @@ public class Assistant {
         return mStorageInfoManager;
     }
 
-    public InitConfig getInitCfg() {
-        return mInitCfg;
+    public InitConfig getConfig() {
+        return mConfig;
+    }
+
+    public FragmentMakeAdapter getFragmentMakeAdapter() {
+        return fragmentMakeAdapter;
+    }
+
+    public ScanResultAdapter getScanResultAdapter() {
+        return scanResultAdapter;
+    }
+
+    public OkHttpInterceptAdapter getOkHttpInterceptAdapter() {
+        return okHttpInterceptAdapter;
     }
 }
