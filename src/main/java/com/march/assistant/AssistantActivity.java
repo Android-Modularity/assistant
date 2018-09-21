@@ -52,7 +52,12 @@ public class AssistantActivity extends BaseAssistantActivity {
         private  List<String> titles;
 
         public FragmentMakeAdapterWrap() {
-            titles = new ArrayList<>(Assistant.getInst().getInitCfg().fragmentMakeAdapter.getTitles());
+            if (Assistant.getInst().getInitCfg().fragmentMakeAdapter == null) {
+                titles = new ArrayList<>();
+            } else {
+                titles = new ArrayList<>(Assistant.getInst().getInitCfg().fragmentMakeAdapter.getTitles());
+            }
+            titles = new ArrayList<>();
             titles.add(TOOL);
             titles.add(CONSOLE);
             titles.add(NET);
@@ -81,8 +86,8 @@ public class AssistantActivity extends BaseAssistantActivity {
                     fragment = new FileFragment();
                     break;
             }
-            if(fragment == null) {
-                fragment =Assistant.getInst().getInitCfg().fragmentMakeAdapter.makeFragment(title);
+            if (fragment == null && Assistant.getInst().getInitCfg().fragmentMakeAdapter != null) {
+                fragment = Assistant.getInst().getInitCfg().fragmentMakeAdapter.makeFragment(title);
             }
             if (fragment != null) {
                 fragment.setTitle(title);

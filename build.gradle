@@ -1,6 +1,6 @@
 dependencies {
     api libs.leakCanaryDebug
-    implementation libs.common
+    api libs.common
     implementation libs.appcompat_v7
     implementation libs.recyclerView_v7
     implementation libs.design

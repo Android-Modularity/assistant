@@ -23,7 +23,7 @@ import com.march.assistant.common.CopyRunnable;
 import com.march.assistant.utils.SignUtils;
 import com.march.assistant.utils.Utils;
 import com.march.common.Common;
-import com.march.common.model.CommBuildCfg;
+import com.march.common.model.AppBuildConfig;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -69,7 +69,7 @@ public class ToolsFragment extends BaseAssistantFragment {
                 Assistant.getInst().getInitCfg().injectAdapter.handleScanResult(requireActivity(), result);
             }
         }));
-        CommBuildCfg buildConfig = Common.getInst().getBuildConfig();
+        AppBuildConfig buildConfig = Common.getInst().getBuildConfig();
         mItemWraps.add(new ItemWrap("Build.BRAND", android.os.Build.BRAND));
         mItemWraps.add(new ItemWrap("Build.MODEL", android.os.Build.MODEL));
         mItemWraps.add(new ItemWrap("Build.VERSION", android.os.Build.VERSION.RELEASE));
