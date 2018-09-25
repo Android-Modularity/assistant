@@ -14,7 +14,7 @@ import java.net.URLDecoder;
  *
  * @author chendong
  */
-public class Utils {
+public class AssistantUtils {
 
 
     public static final int SCAN_REQ_CODE = 101;

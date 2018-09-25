@@ -19,7 +19,7 @@ import com.march.assistant.funcs.console.ConsoleFragment;
 import com.march.assistant.funcs.file.FileFragment;
 import com.march.assistant.funcs.net.NetFragment;
 import com.march.assistant.funcs.tools.ToolsFragment;
-import com.march.assistant.utils.Utils;
+import com.march.assistant.utils.AssistantUtils;
 import com.march.common.extensions.BarUI;
 
 import java.util.ArrayList;
@@ -184,7 +184,7 @@ public class AssistantActivity extends BaseAssistantActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (Utils.SCAN_REQ_CODE == requestCode) {
+        if (AssistantUtils.SCAN_REQ_CODE == requestCode) {
             ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             if (clipboardManager != null) {
                 CharSequence text = clipboardManager.getText();

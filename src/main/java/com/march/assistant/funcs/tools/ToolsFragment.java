@@ -16,7 +16,7 @@ import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantFragment;
 import com.march.assistant.common.CopyRunnable;
 import com.march.assistant.utils.SignUtils;
-import com.march.assistant.utils.Utils;
+import com.march.assistant.utils.AssistantUtils;
 import com.march.common.Common;
 import com.march.common.model.AppBuildConfig;
 import com.march.lightadapter.LightAdapter;
@@ -59,7 +59,7 @@ public class ToolsFragment extends BaseAssistantFragment {
     private void initDatas() {
         mItemWraps.clear();
         mItemWraps.add(new ItemWrap("设置", "点击打开设置", () -> startActivity(new Intent(Settings.ACTION_SETTINGS))));
-        mItemWraps.add(new ItemWrap("扫一扫", "点击扫一扫", () -> Utils.openScan(requireActivity())));
+        mItemWraps.add(new ItemWrap("扫一扫", "点击扫一扫", () -> AssistantUtils.openScan(requireActivity())));
         mItemWraps.add(new ItemWrap("上次扫描", Assistant.getInst().getDataSource().getLastScanResult(), () -> {
             String result = Assistant.getInst().getDataSource().getLastScanResult();
             if (!TextUtils.isEmpty(result)) {

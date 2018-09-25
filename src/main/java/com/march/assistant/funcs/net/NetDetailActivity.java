@@ -12,7 +12,7 @@ import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantActivity;
 import com.march.assistant.common.CopyRunnable;
 import com.march.assistant.funcs.browser.BrowserTextActivity;
-import com.march.assistant.utils.Utils;
+import com.march.assistant.utils.AssistantUtils;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -105,7 +105,7 @@ public class NetDetailActivity extends BaseAssistantActivity {
     private void initDatas() {
         mItemWraps = new ArrayList<>();
         HttpUrl httpUrl = mNetModel.parseHttpUrl();
-        mItemWraps.add(new ItemWrap("url", Utils.decode(httpUrl.toString())));
+        mItemWraps.add(new ItemWrap("url", AssistantUtils.decode(httpUrl.toString())));
         mItemWraps.add(new ItemWrap("host",httpUrl.host()));
         mItemWraps.add(new ItemWrap("path", httpUrl.encodedPath()));
 
@@ -144,7 +144,7 @@ public class NetDetailActivity extends BaseAssistantActivity {
         Set<String> requestQueryKeys = httpUrl.queryParameterNames();
         if (requestQueryKeys != null && !requestQueryKeys.isEmpty()) {
             for (String key : requestQueryKeys) {
-                mItemWraps.add(new ItemWrap("[Query]" + key, Utils.decode(httpUrl.queryParameter(key))));
+                mItemWraps.add(new ItemWrap("[Query]" + key, AssistantUtils.decode(httpUrl.queryParameter(key))));
             }
         }
         Map<String, String> requestHeaders = mNetModel.getRequestHeaders();
