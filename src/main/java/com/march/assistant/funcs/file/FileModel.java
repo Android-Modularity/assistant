@@ -1,4 +1,4 @@
-package com.march.assistant.funcs.files;
+package com.march.assistant.funcs.file;
 
 import android.text.TextUtils;
 

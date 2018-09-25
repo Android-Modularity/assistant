@@ -1,4 +1,4 @@
-package com.march.assistant.funcs.files;
+package com.march.assistant.funcs.file;
 
 import android.annotation.TargetApi;
 import android.content.ClipData;
@@ -6,15 +6,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantFragment;
@@ -44,15 +39,18 @@ public class FileFragment extends BaseAssistantFragment {
     private LightAdapter<FileModel> mLightAdapter;
     private FileModel               mCurFileModel;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.file_fragment, container, false);
+    public int getLayoutId() {
+        return R.layout.file_fragment;
+    }
+
+    @Override
+    public void initView(View view) {
         mRecyclerView = view.findViewById(R.id.data_rv);
         initDatas();
         updateAdapter();
-        return view;
     }
+
 
     @TargetApi(Build.VERSION_CODES.FROYO)
     private void initDatas() {

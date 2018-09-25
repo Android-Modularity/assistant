@@ -29,11 +29,7 @@ import okio.BufferedSource;
 
 /**
  * CreateAt : 2017/7/1
- * Describe : 自定义日志打印拦截器，扩展自 HttpLoggingInterceptor
- * REQ_BODY
- * REQ_HEADERS
- * RESP_BODY
- * RESP_HEADERS
+ * Describe : 抓包，并以 UI 和 log 形式展示
  *
  * @author chendong
  */
@@ -82,56 +78,70 @@ public final class CharlesInterceptor implements Interceptor {
                 reqHeaders.put("Content-Length:", String.valueOf(requestBody.contentLength()));
             }
             if (requestBody instanceof FormBody) {
-                FormBody formBody = (FormBody) requestBody;
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < formBody.size(); i++) {
-                    sb.append(formBody.name(i)).append("=").append(formBody.value(i)).append("&");
-                }
-                model.setPostForms(sb.toString());
+                parseRequestFormBody(model, (FormBody) requestBody);
             } else if (requestBody instanceof MultipartBody) {
-                MultipartBody multipartBody = (MultipartBody) requestBody;
-                StringBuilder sb = new StringBuilder();
-                sb.append("boundary").append(" -> ").append(multipartBody.boundary()).append("\n\n");
-                sb.append("type").append(" -> ").append(multipartBody.type()).append("\n\n");
-                sb.append("mediaType").append(" -> ").append(multipartBody.contentType()).append("\n\n");
-                try {
-                    sb.append("contentLength").append(" -> ").append(multipartBody.contentLength()).append("\n\n");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                List<MultipartBody.Part> parts = multipartBody.parts();
-                for (MultipartBody.Part part : parts) {
-                    sb.append("part[").append(parts.indexOf(part)).append("] = ").append("\n\n");
-                    sb.append("contentLength = ").append(part.body().contentLength()).append("\n\n");
-                    Headers partHeaders = part.headers();
-                    if (partHeaders != null) {
-                        for (int i = 0; i < partHeaders.size(); i++) {
-                            sb.append(partHeaders.name(i)).append(" -> ").append(partHeaders.value(i)).append("\n\n");
-                        }
-                    }
-                    sb.append("\n\n\n");
-                }
-                model.setRequestBody(sb.toString());
+                parseRequestMultiBody(model, (MultipartBody) requestBody);
             } else {
-                Buffer buffer = new Buffer();
-                requestBody.writeTo(buffer);
-                Charset charset = UTF8;
-                MediaType contentType = requestBody.contentType();
-                if (contentType != null) {
-                    charset = contentType.charset(UTF8);
-                }
-                if (isPlaintext(buffer) && charset != null) {
-                    String body = buffer.readString(charset);
-                    model.setRequestBody(toJson(body));
-                    model.setRequestSize(body.getBytes().length);
-                } else {
-                    model.setRequestBody("二进制body");
-                    model.setRequestSize(buffer.size());
-                }
+                parseRequestBody(model, requestBody);
             }
         }
     }
 
+    // 解析通用的 requestBody
+    private void parseRequestBody(NetModel model, RequestBody requestBody) throws IOException {
+        Buffer buffer = new Buffer();
+        requestBody.writeTo(buffer);
+        Charset charset = UTF8;
+        MediaType contentType = requestBody.contentType();
+        if (contentType != null) {
+            charset = contentType.charset(UTF8);
+        }
+        if (isPlaintext(buffer) && charset != null) {
+            String body = buffer.readString(charset);
+            model.setRequestBody(toJson(body));
+            model.setRequestSize(body.getBytes().length);
+        } else {
+            model.setRequestBody("二进制body");
+            model.setRequestSize(buffer.size());
+        }
+    }
+
+    // 解析带文件上传的 requestBody
+    private void parseRequestMultiBody(NetModel model, MultipartBody requestBody) throws IOException {
+        MultipartBody multipartBody = requestBody;
+        StringBuilder sb = new StringBuilder();
+        sb.append("boundary").append(" -> ").append(multipartBody.boundary()).append("\n\n");
+        sb.append("type").append(" -> ").append(multipartBody.type()).append("\n\n");
+        sb.append("mediaType").append(" -> ").append(multipartBody.contentType()).append("\n\n");
+        try {
+            sb.append("contentLength").append(" -> ").append(multipartBody.contentLength()).append("\n\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<MultipartBody.Part> parts = multipartBody.parts();
+        for (MultipartBody.Part part : parts) {
+            sb.append("part[").append(parts.indexOf(part)).append("] = ").append("\n\n");
+            sb.append("contentLength = ").append(part.body().contentLength()).append("\n\n");
+            Headers partHeaders = part.headers();
+            if (partHeaders != null) {
+                for (int i = 0; i < partHeaders.size(); i++) {
+                    sb.append(partHeaders.name(i)).append(" -> ").append(partHeaders.value(i)).append("\n");
+                }
+            }
+            sb.append("\n\n\n");
+        }
+        model.setRequestBody(sb.toString());
+    }
+
+    // 解析表单上传的 requestBody
+    private void parseRequestFormBody(NetModel model, FormBody requestBody) {
+        FormBody formBody = requestBody;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < formBody.size(); i++) {
+            sb.append(formBody.name(i)).append("=").append(formBody.value(i)).append("&");
+        }
+        model.setPostForms(sb.toString());
+    }
 
 
     // 打印 response

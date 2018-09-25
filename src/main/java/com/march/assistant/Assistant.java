@@ -31,9 +31,9 @@ public class Assistant {
     private StorageInfoManager mStorageInfoManager;
 
     private InitConfig mConfig;
-    private FragmentMakeAdapter fragmentMakeAdapter;
-    private ScanResultAdapter scanResultAdapter;
-    private OkHttpInterceptAdapter okHttpInterceptAdapter;
+    private FragmentMakeAdapter mFragmentMakeAdapter;
+    private ScanResultAdapter mScanResultAdapter;
+    private OkHttpInterceptAdapter mOkHttpInterceptAdapter;
 
     private static Assistant sInst;
 
@@ -57,14 +57,15 @@ public class Assistant {
     public static void init(Application app, InitConfig cfg) {
         Assistant inst = getInst();
         inst.mConfig = cfg;
-        inst.fragmentMakeAdapter = cfg.fragmentMakeAdapter;
-        inst.scanResultAdapter = cfg.scanResultAdapter;
-        inst.okHttpInterceptAdapter = cfg.okHttpInterceptAdapter;
+        inst.mFragmentMakeAdapter = cfg.fragmentMakeAdapter;
+        inst.mScanResultAdapter = cfg.scanResultAdapter;
+        inst.mOkHttpInterceptAdapter = cfg.okHttpInterceptAdapter;
         Stetho.initializeWithDefaults(app);
         inst.initLeakCanary(app);
         app.registerActivityLifecycleCallbacks(new AssistantActivityLifeCallback());
     }
 
+    // 初始化内存泄漏检测
     private void initLeakCanary(Application app) {
         if (LeakCanary.isInAnalyzerProcess(app)) {
             return;
@@ -75,7 +76,6 @@ public class Assistant {
                 .instanceField("com.android.internal.policy.PhoneWindow$DecorView", "mContext")
                 .instanceField("android.support.v7.widget.SearchView$SearchAutoComplete", "mContext")
                 .build();
-//
         mRefWatcher = LeakCanary.refWatcher(app)
                 .listenerServiceClass(DisplayLeakService.class)
                 .excludedRefs(excludedRefs)
@@ -83,7 +83,8 @@ public class Assistant {
 
     }
 
-    public static void initOkHttp(OkHttpClient.Builder builder) {
+    // 绑定 okHttp 调试
+    public void hookOkHttp(OkHttpClient.Builder builder) {
         builder.addNetworkInterceptor(new StethoInterceptor());
         builder.addInterceptor(new CharlesInterceptor());
     }
@@ -100,19 +101,24 @@ public class Assistant {
         return mStorageInfoManager;
     }
 
+    /*
+        获取配置项
+     */
+
+
     public InitConfig getConfig() {
         return mConfig;
     }
 
     public FragmentMakeAdapter getFragmentMakeAdapter() {
-        return fragmentMakeAdapter;
+        return mFragmentMakeAdapter;
     }
 
     public ScanResultAdapter getScanResultAdapter() {
-        return scanResultAdapter;
+        return mScanResultAdapter;
     }
 
     public OkHttpInterceptAdapter getOkHttpInterceptAdapter() {
-        return okHttpInterceptAdapter;
+        return mOkHttpInterceptAdapter;
     }
 }

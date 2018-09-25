@@ -5,16 +5,11 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.march.assistant.Assistant;
 import com.march.assistant.R;
@@ -46,16 +41,19 @@ public class ToolsFragment extends BaseAssistantFragment {
     private LightAdapter<ItemWrap> mLightAdapter;
     private List<ItemWrap>         mItemWraps;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tools_fragment, container, false);
+    public int getLayoutId() {
+        return R.layout.tools_fragment;
+    }
+
+    @Override
+    public void initView(View view) {
         mRecyclerView = view.findViewById(R.id.data_rv);
         mItemWraps = new ArrayList<>();
         initDatas();
         updateAdapter();
-        return view;
     }
+
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initDatas() {
@@ -93,6 +91,7 @@ public class ToolsFragment extends BaseAssistantFragment {
     }
 
     class ItemWrap {
+
         String   title;
         String   text;
         Runnable runnable;

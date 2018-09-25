@@ -9,15 +9,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.march.common.utils.FileUtils;
-import com.march.common.utils.StreamUtils;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantActivity;
+import com.march.common.pool.ExecutorsPool;
+import com.march.common.utils.FileUtils;
+import com.march.common.utils.StreamUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * CreateAt : 2018/6/12
@@ -27,9 +26,9 @@ import java.util.concurrent.Executors;
  */
 public class BrowserTextActivity extends BaseAssistantActivity {
 
-    private ExecutorService mExecutorService;
 
     public static final String DATA = "data";
+
     private TextView mContentTv;
 
     public static void startActivity(Context context, String text) {
@@ -42,7 +41,6 @@ public class BrowserTextActivity extends BaseAssistantActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.browser_text_activity);
-        mExecutorService = Executors.newSingleThreadExecutor();
         mContentTv = findViewById(R.id.content_tv);
         findViewById(R.id.switch_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +69,7 @@ public class BrowserTextActivity extends BaseAssistantActivity {
         if (FileUtils.isNotExist(path)) {
             return;
         }
-        mExecutorService.execute(new Runnable() {
+        ExecutorsPool.getInst().execute(new Runnable() {
             @Override
             public void run() {
                 try {

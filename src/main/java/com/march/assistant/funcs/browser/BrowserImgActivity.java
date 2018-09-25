@@ -47,12 +47,11 @@ public class BrowserImgActivity extends BaseAssistantActivity {
         String  path= getIntent().getStringExtra(DATA);
         if(TextUtils.isEmpty(path)){
             try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 ClipData clipData = getIntent().getClipData();
                 if(clipData!=null) {
                     path = clipData.getItemAt(0).getText().toString();
                 }
-            } }catch (Exception e){
+            }catch (Exception e){
                 e.printStackTrace();
             }
         }

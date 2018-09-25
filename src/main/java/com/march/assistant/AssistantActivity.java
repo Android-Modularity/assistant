@@ -2,7 +2,6 @@ package com.march.assistant;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -17,7 +16,7 @@ import com.march.assistant.adapter.FragmentMakeAdapter;
 import com.march.assistant.base.BaseAssistantActivity;
 import com.march.assistant.base.BaseAssistantFragment;
 import com.march.assistant.funcs.console.ConsoleFragment;
-import com.march.assistant.funcs.files.FileFragment;
+import com.march.assistant.funcs.file.FileFragment;
 import com.march.assistant.funcs.net.NetFragment;
 import com.march.assistant.funcs.tools.ToolsFragment;
 import com.march.assistant.utils.Utils;
@@ -40,6 +39,8 @@ public class AssistantActivity extends BaseAssistantActivity {
     public static final String NET     = "网络";
     public static final String FILE    = "文件";
     public static final String TOOL    = "工具";
+
+    private static int mTabIndex = 0;
 
     private ViewPager             mContentVp;
     private TabLayout             mTitleTabLy;
@@ -120,6 +121,7 @@ public class AssistantActivity extends BaseAssistantActivity {
             @Override
             public void onPageSelected(int position) {
                 mCurFragment = adapter.getFragment(position);
+                mTabIndex = position;
             }
 
             @Override
@@ -128,6 +130,10 @@ public class AssistantActivity extends BaseAssistantActivity {
             }
         });
         mTitleTabLy.setupWithViewPager(mContentVp, true);
+        TabLayout.Tab tabAt = mTitleTabLy.getTabAt(mTabIndex);
+        if (tabAt != null) {
+            tabAt.select();
+        }
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
