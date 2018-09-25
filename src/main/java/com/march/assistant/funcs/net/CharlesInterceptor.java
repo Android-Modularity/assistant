@@ -125,7 +125,8 @@ public final class CharlesInterceptor implements Interceptor {
             Headers partHeaders = part.headers();
             if (partHeaders != null) {
                 for (int i = 0; i < partHeaders.size(); i++) {
-                    sb.append(partHeaders.name(i)).append(" -> ").append(partHeaders.value(i)).append("\n");
+                    sb.append(partHeaders.name(i)).append(" -> ").append(partHeaders.value(i)).append("\n")
+                            .append("body -> ").append(parseStringFromRequestBody(part.body())).append("\n");
                 }
             }
             sb.append("\n\n\n");
@@ -143,6 +144,25 @@ public final class CharlesInterceptor implements Interceptor {
         model.setPostForms(sb.toString());
     }
 
+
+    private String parseStringFromRequestBody(RequestBody requestBody) {
+        try {
+            Buffer buffer = new Buffer();
+            requestBody.writeTo(buffer);
+            Charset charset = UTF8;
+            MediaType contentType = requestBody.contentType();
+            if (contentType != null) {
+                charset = contentType.charset(UTF8);
+            }
+            if (isPlaintext(buffer) && charset != null) {
+                return buffer.readString(charset);
+            } else {
+                return "二进制body";
+            }
+        } catch (IOException e) {
+            return "解析失败" + e.getMessage();
+        }
+    }
 
     // 打印 response
     private void logResponse(Response response, NetModel model) throws IOException {

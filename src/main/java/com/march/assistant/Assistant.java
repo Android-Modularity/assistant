@@ -51,7 +51,7 @@ public class Assistant {
     private Assistant() {
         mDataSource = new DataSource();
         mStorageInfoManager = new StorageInfoManager();
-        // mStorageInfoManager.backUp();
+         mStorageInfoManager.backUp();
     }
 
     public static void init(Application app, InitConfig cfg) {
