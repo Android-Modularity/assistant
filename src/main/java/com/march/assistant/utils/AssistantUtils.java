@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.march.common.utils.ToastUtils;
+import com.march.common.exts.ToastX;
 
 import java.net.URLDecoder;
 
@@ -15,7 +15,6 @@ import java.net.URLDecoder;
  * @author chendong
  */
 public class AssistantUtils {
-
 
     public static final int SCAN_REQ_CODE = 101;
 
@@ -39,7 +38,7 @@ public class AssistantUtils {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://weex.apache.org/cn/tools/playground.html"));
             activity.startActivity(intent);
-            ToastUtils.show("请下载扫码工具");
+            ToastX.show("请下载扫码工具");
         }
     }
 }

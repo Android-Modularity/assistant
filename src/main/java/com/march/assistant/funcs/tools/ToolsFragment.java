@@ -67,7 +67,7 @@ public class ToolsFragment extends BaseAssistantFragment {
                 Assistant.getInst().getScanResultAdapter().onScanResult(requireActivity(), result);
             }
         }));
-        AppBuildConfig buildConfig = Common.getInst().getBuildConfig();
+        AppBuildConfig buildConfig = Common.exports.appConfig;
         mItemWraps.add(new ItemWrap("Build.BRAND", android.os.Build.BRAND));
         mItemWraps.add(new ItemWrap("Build.MODEL", android.os.Build.MODEL));
         mItemWraps.add(new ItemWrap("Build.VERSION", android.os.Build.VERSION.RELEASE));

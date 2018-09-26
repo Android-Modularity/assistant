@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantActivity;
+import com.march.common.exts.FileX;
+import com.march.common.exts.StreamX;
 import com.march.common.pool.ExecutorsPool;
-import com.march.common.utils.FileUtils;
-import com.march.common.utils.StreamUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -66,14 +66,14 @@ public class BrowserTextActivity extends BaseAssistantActivity {
 
 
     private void setFileContent(final String path) {
-        if (FileUtils.isNotExist(path)) {
+        if (FileX.isNotExist(path)) {
             return;
         }
         ExecutorsPool.getInst().execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    final String content = StreamUtils.saveStreamToString(new FileInputStream(path));
+                    final String content = StreamX.saveStreamToString(new FileInputStream(path));
                     mContentTv.post(new Runnable() {
                         @Override
                         public void run() {

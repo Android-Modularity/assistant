@@ -3,12 +3,11 @@ package com.march.assistant.common;
 import android.text.TextUtils;
 
 import com.march.common.Common;
-import com.march.common.utils.DateFormatUtils;
-import com.march.common.utils.FileUtils;
-import com.march.common.utils.RecycleUtils;
-import com.march.common.utils.StreamUtils;
 import com.march.assistant.DataSource;
 import com.march.assistant.Assistant;
+import com.march.common.exts.FileX;
+import com.march.common.exts.RecycleX;
+import com.march.common.exts.StreamX;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -54,13 +53,13 @@ public class StorageInfoManager {
         @Override
         public void run() {
             try {
-                File debugFile = new File(Common.getInst().getContext().getCacheDir(), "debug.log");
-                if (FileUtils.isNotExist(debugFile)) {
+                File debugFile = new File(Common.app().getCacheDir(), "debug.log");
+                if (FileX.isNotExist(debugFile)) {
                     return;
                 }
-                String json = StreamUtils.saveStreamToString(new FileInputStream(debugFile));
+                String json = StreamX.saveStreamToString(new FileInputStream(debugFile));
                 if (!TextUtils.isEmpty(json)) {
-                    DataSource dataSource = Common.getInst().getJsonAdapter().toObj(json, DataSource.class);
+                    DataSource dataSource = Common.exports.jsonParser.toObj(json, DataSource.class);
                     Assistant.getInst().getDataSource().backUp(dataSource);
                 }
             } catch (FileNotFoundException e) {
@@ -77,15 +76,15 @@ public class StorageInfoManager {
         public void run() {
             try {
                 DataSource ds = Assistant.getInst().getDataSource().copy();
-                String json = Common.getInst().getJsonAdapter().toJson(ds);
+                String json = Common.exports.jsonParser.toJson(ds);
                 if (!TextUtils.isEmpty(json)) {
                     mBais = new ByteArrayInputStream(json.getBytes());
-                    StreamUtils.saveStreamToFile(new File(Common.getInst().getContext().getCacheDir(), "debug.log"), mBais);
+                    StreamX.saveStreamToFile(new File(Common.app().getCacheDir(), "debug.log"), mBais);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                RecycleUtils.recycle(mBais);
+                RecycleX.recycle(mBais);
             }
         }
     }

@@ -3,10 +3,7 @@ package com.march.assistant.funcs.net;
 import android.support.annotation.NonNull;
 
 import com.march.assistant.Assistant;
-import com.march.common.utils.LgUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.march.common.exts.JsonX;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -98,7 +95,7 @@ public final class CharlesInterceptor implements Interceptor {
         }
         if (isPlaintext(buffer) && charset != null) {
             String body = buffer.readString(charset);
-            model.setRequestBody(toJson(body));
+            model.setRequestBody(JsonX.toJsonString(body,"解析失败"));
             model.setRequestSize(body.getBytes().length);
         } else {
             model.setRequestBody("二进制body");
@@ -191,21 +188,11 @@ public final class CharlesInterceptor implements Interceptor {
                 model.setResponseSize(buffer.size());
             } else if (responseBody.contentLength() != 0) {
                 String body = buffer.clone().readString(charset == null ? Charset.forName("utf-8") : charset);
-                model.setResponseBody(toJson(body));
+                model.setResponseBody(JsonX.toJsonString(body,"解析失败"));
                 model.setResponseSize(body.getBytes().length);
             }
         }
     }
-
-    private String toJson(String data){
-        try {
-           return new JSONObject(data).toString(2).replace("\\/", "/");
-        } catch (JSONException e) {
-            LgUtils.e("不是json返回");
-           return "json parse error \n "+ data;
-        }
-    }
-
 
     private boolean isPlaintext(Buffer buffer) {
         try {

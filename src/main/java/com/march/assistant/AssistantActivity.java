@@ -20,7 +20,7 @@ import com.march.assistant.funcs.file.FileFragment;
 import com.march.assistant.funcs.net.NetFragment;
 import com.march.assistant.funcs.tools.ToolsFragment;
 import com.march.assistant.utils.AssistantUtils;
-import com.march.common.extensions.BarUI;
+import com.march.common.exts.BarUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.march.assistant.DragLayout;
+import com.march.common.exts.SizeX;
 import com.march.common.impl.ActivityLifecycleCallback;
-import com.march.common.utils.DimensUtils;
-import com.march.common.view.DragLayout;
 import com.march.assistant.AssistantActivity;
 import com.march.assistant.Assistant;
 import com.march.assistant.R;
@@ -38,7 +38,7 @@ public class AssistantActivityLifeCallback extends ActivityLifecycleCallback {
                 return;
             }
             final DragLayout dragLayout = (DragLayout) activity.getLayoutInflater().inflate(R.layout.debug_view, null);
-            dragLayout.setLayoutParams(new FrameLayout.LayoutParams(DimensUtils.dp2px(40), DimensUtils.dp2px(40)));
+            dragLayout.setLayoutParams(new FrameLayout.LayoutParams(SizeX.dp2px(40), SizeX.dp2px(40)));
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.END | Gravity.BOTTOM;
             params.rightMargin = 100;

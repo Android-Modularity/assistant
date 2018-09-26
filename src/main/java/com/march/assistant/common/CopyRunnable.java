@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.march.common.utils.ToastUtils;
+import com.march.common.exts.ToastX;
 
 /**
  * CreateAt : 2018/6/13
@@ -38,6 +38,6 @@ public class CopyRunnable implements Runnable {
             cm.setPrimaryClip(mClipData);
         }
         String show = text.length() > 10 ? text.substring(0, 4) + "..." : text;
-        ToastUtils.show(show + "已复制");
+        ToastX.show(show + "已复制");
     }
 }

@@ -135,7 +135,7 @@ public class FileFragment extends BaseAssistantFragment {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-            uri = FileProvider.getUriForFile(requireActivity(), Common.getInst().getBuildConfig().APPLICATION_ID + ".fileProvider", file);
+            uri = FileProvider.getUriForFile(requireActivity(), Common.exports.appConfig.APPLICATION_ID + ".fileProvider", file);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }else{
             uri = Uri.fromFile(file);
