@@ -35,9 +35,9 @@ import java.util.List;
  */
 public class FileFragment extends BaseAssistantFragment {
 
-    private RecyclerView            mRecyclerView;
+    private RecyclerView mRecyclerView;
     private LightAdapter<FileModel> mLightAdapter;
-    private FileModel               mCurFileModel;
+    private FileModel mCurFileModel;
 
     @Override
     public int getLayoutId() {
@@ -61,10 +61,10 @@ public class FileFragment extends BaseAssistantFragment {
         mCurFileModel.setTop(true);
 
         List<FileModel> list = new ArrayList<>();
-        list.add(new FileModel("FilesDir",getActivity().getFilesDir(), mCurFileModel));
-        list.add(new FileModel("CacheDir",getActivity().getCacheDir(), mCurFileModel));
-        list.add(new FileModel("ExternalCacheDir",getActivity().getExternalCacheDir(), mCurFileModel));
-        list.add(new FileModel("存储卡",Environment.getExternalStorageDirectory(), mCurFileModel));
+        list.add(new FileModel("FilesDir", getActivity().getFilesDir(), mCurFileModel));
+        list.add(new FileModel("CacheDir", getActivity().getCacheDir(), mCurFileModel));
+        list.add(new FileModel("ExternalCacheDir", getActivity().getExternalCacheDir(), mCurFileModel));
+        list.add(new FileModel("存储卡", Environment.getExternalStorageDirectory(), mCurFileModel));
         list.add(new FileModel(new File(Environment.getExternalStorageDirectory(), "weex-cache"), mCurFileModel));
         mCurFileModel.setChildren(list);
     }
@@ -79,7 +79,7 @@ public class FileFragment extends BaseAssistantFragment {
         List<FileModel> children = mCurFileModel.getChildren();
         if (mLightAdapter != null) {
             mLightAdapter.update().update(children);
-            if(mCurFileModel.getIndex()>0 && mCurFileModel.getIndex() < mLightAdapter.getDatas().size()) {
+            if (mCurFileModel.getIndex() > 0 && mCurFileModel.getIndex() < mLightAdapter.getDatas().size()) {
                 mRecyclerView.scrollToPosition(mCurFileModel.getIndex());
             }
             return;
@@ -109,16 +109,16 @@ public class FileFragment extends BaseAssistantFragment {
         });
         LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(getActivity()));
         LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
-        if(mCurFileModel.getIndex()>0 && mCurFileModel.getIndex() < mLightAdapter.getDatas().size()) {
+        if (mCurFileModel.getIndex() > 0 && mCurFileModel.getIndex() < mLightAdapter.getDatas().size()) {
             mRecyclerView.scrollToPosition(mCurFileModel.getIndex());
         }
     }
 
 
-    private boolean checkSuffix(String path,String ... suffixs){
+    private boolean checkSuffix(String path, String... suffixs) {
         String lowerCase = path.toLowerCase();
         for (String suffix : suffixs) {
-            if(lowerCase.endsWith(suffix)){
+            if (lowerCase.endsWith(suffix)) {
                 return true;
             }
         }
@@ -127,25 +127,25 @@ public class FileFragment extends BaseAssistantFragment {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void openFile(File file) {
-        if(checkSuffix(file.getName(),"log","txt","js","html","htm",".0")){
-            BrowserTextActivity.startActivity(getActivity(),file.getAbsolutePath());
+        if (checkSuffix(file.getName(), "log", "txt", "js", "html", "htm", ".0")) {
+            BrowserTextActivity.startActivity(getActivity(), file.getAbsolutePath());
             return;
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             uri = FileProvider.getUriForFile(requireActivity(), Common.exports.appConfig.APPLICATION_ID + ".fileProvider", file);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }else{
+        } else {
             uri = Uri.fromFile(file);
         }
-        if(checkSuffix(file.getName(),"png","jpg","gif","jpeg","webp")){
-            intent.setDataAndType(uri,"image/*");
-        } else if(checkSuffix(file.getName(),"log","txt","js","html","htm")) {
-            intent.setDataAndType(uri,"text/*");
+        if (checkSuffix(file.getName(), "png", "jpg", "gif", "jpeg", "webp")) {
+            intent.setDataAndType(uri, "image/*");
+        } else if (checkSuffix(file.getName(), "log", "txt", "js", "html", "htm")) {
+            intent.setDataAndType(uri, "text/*");
         }
-        intent.setClipData(new ClipData("clip",new String[]{},new ClipData.Item(file.getAbsolutePath())));
+        intent.setClipData(new ClipData("clip", new String[]{}, new ClipData.Item(file.getAbsolutePath())));
         startActivity(intent);
     }
 

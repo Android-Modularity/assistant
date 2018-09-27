@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class FileModel {
 
-    private boolean         isTop;
+    private boolean isTop;
     private String name;
-    private File            file;
-    private FileModel       parent;
+    private File file;
+    private FileModel parent;
     private List<FileModel> children;
     private int index;
 
@@ -37,8 +37,8 @@ public class FileModel {
     }
 
     public String getName() {
-        if(TextUtils.isEmpty(name)){
-            if(file!=null) {
+        if (TextUtils.isEmpty(name)) {
+            if (file != null) {
                 name = file.getName();
             }
         }
@@ -61,16 +61,16 @@ public class FileModel {
         return isTop;
     }
 
+    public void setTop(boolean top) {
+        isTop = top;
+    }
+
     public FileModel getParent() {
         return parent;
     }
 
     public void setParent(FileModel parent) {
         this.parent = parent;
-    }
-
-    public void setTop(boolean top) {
-        isTop = top;
     }
 
     public List<FileModel> getChildren() {

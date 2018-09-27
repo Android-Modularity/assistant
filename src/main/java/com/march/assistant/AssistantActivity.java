@@ -36,21 +36,80 @@ import java.util.Map;
 public class AssistantActivity extends BaseAssistantActivity {
 
     public static final String CONSOLE = "控制台";
-    public static final String NET     = "网络";
-    public static final String FILE    = "文件";
-    public static final String TOOL    = "工具";
+    public static final String NET = "网络";
+    public static final String FILE = "文件";
+    public static final String TOOL = "工具";
 
     private static int mTabIndex = 0;
 
-    private ViewPager             mContentVp;
-    private TabLayout             mTitleTabLy;
+    private ViewPager mContentVp;
+    private TabLayout mTitleTabLy;
 
     private FragmentMakeAdapterWrap mFragmentMakeAdapterWrap;
     private BaseAssistantFragment mCurFragment;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.assistant_activity);
+        BarUI.setStatusBarLightMode(this);
+        mFragmentMakeAdapterWrap = new FragmentMakeAdapterWrap();
+        mContentVp = findViewById(R.id.content_pager);
+        mTitleTabLy = findViewById(R.id.title_tably);
+
+        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mContentVp.setAdapter(adapter);
+        mContentVp.setOffscreenPageLimit(mFragmentMakeAdapterWrap.titles.size());
+        mContentVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mCurFragment = adapter.getFragment(position);
+                mTabIndex = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mTitleTabLy.setupWithViewPager(mContentVp, true);
+        TabLayout.Tab tabAt = mTitleTabLy.getTabAt(mTabIndex);
+        if (tabAt != null) {
+            tabAt.select();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mCurFragment != null && mCurFragment.onBackPressed()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (AssistantUtils.SCAN_REQ_CODE == requestCode) {
+            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            if (clipboardManager != null) {
+                CharSequence text = clipboardManager.getText();
+                if (!TextUtils.isEmpty(text)) {
+                    Assistant.getInst().getScanResultAdapter().onScanResult(this, text);
+                    Assistant.getInst().getDataSource().setLastScanResult(text.toString());
+                }
+            }
+        }
+    }
+
     class FragmentMakeAdapterWrap implements FragmentMakeAdapter {
 
-        private  List<String> titles;
+        private List<String> titles;
 
         public FragmentMakeAdapterWrap() {
             FragmentMakeAdapter adapter = Assistant.getInst().getFragmentMakeAdapter();
@@ -99,46 +158,14 @@ public class AssistantActivity extends BaseAssistantActivity {
         }
     }
 
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.assistant_activity);
-        BarUI.setStatusBarLightMode(this);
-        mFragmentMakeAdapterWrap = new FragmentMakeAdapterWrap();
-        mContentVp = findViewById(R.id.content_pager);
-        mTitleTabLy = findViewById(R.id.title_tably);
-
-        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mContentVp.setAdapter(adapter);
-        mContentVp.setOffscreenPageLimit(mFragmentMakeAdapterWrap.titles.size());
-        mContentVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mCurFragment = adapter.getFragment(position);
-                mTabIndex = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        mTitleTabLy.setupWithViewPager(mContentVp, true);
-        TabLayout.Tab tabAt = mTitleTabLy.getTabAt(mTabIndex);
-        if (tabAt != null) {
-            tabAt.select();
-        }
-    }
-
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private Map<String, BaseAssistantFragment> mDebugFragmentMap;
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+            mDebugFragmentMap = new HashMap<>();
+        }
 
         public BaseAssistantFragment getFragment(int pos) {
             String title = mFragmentMakeAdapterWrap.titles.get(pos);
@@ -148,11 +175,6 @@ public class AssistantActivity extends BaseAssistantActivity {
             }
             mDebugFragmentMap.put(title, fragment);
             return fragment;
-        }
-
-        public ViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-            mDebugFragmentMap = new HashMap<>();
         }
 
         @Nullable
@@ -169,30 +191,6 @@ public class AssistantActivity extends BaseAssistantActivity {
         @Override
         public int getCount() {
             return mFragmentMakeAdapterWrap.titles.size();
-        }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        if(mCurFragment!=null && mCurFragment.onBackPressed()){
-            return;
-        }
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (AssistantUtils.SCAN_REQ_CODE == requestCode) {
-            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            if (clipboardManager != null) {
-                CharSequence text = clipboardManager.getText();
-                if (!TextUtils.isEmpty(text)) {
-                    Assistant.getInst().getScanResultAdapter().onScanResult(this, text);
-                    Assistant.getInst().getDataSource().setLastScanResult(text.toString());
-                }
-            }
         }
     }
 }

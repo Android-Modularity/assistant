@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ConsoleFragment extends BaseAssistantFragment {
 
-    private RecyclerView               mRecyclerView;
+    private RecyclerView mRecyclerView;
     private LightAdapter<ConsoleModel> mLightAdapter;
 
     @Override
@@ -58,7 +58,7 @@ public class ConsoleFragment extends BaseAssistantFragment {
             }
         };
         LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(getActivity()));
-        LinerDividerDecoration.attachRecyclerView(mRecyclerView,R.drawable.divider);
+        LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
     }
 
 }

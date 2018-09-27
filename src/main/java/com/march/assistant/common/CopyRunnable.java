@@ -19,7 +19,7 @@ import com.march.common.exts.ToastX;
 public class CopyRunnable implements Runnable {
 
     private Activity activity;
-    private String   text;
+    private String text;
 
     public CopyRunnable(Activity activity, String text) {
         this.activity = activity;

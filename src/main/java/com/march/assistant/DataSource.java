@@ -15,11 +15,11 @@ import java.util.List;
 public class DataSource {
 
     public static final int CONSOLE_LIMIT = 200;
-    public static final int NET_LIMIT     = 100;
+    public static final int NET_LIMIT = 100;
 
     private List<ConsoleModel> mConsoleModels;
-    private List<NetModel>     mNetModels;
-    private String             mLastScanResult;
+    private List<NetModel> mNetModels;
+    private String mLastScanResult;
 
     public DataSource() {
         mConsoleModels = new ArrayList<>();
@@ -27,10 +27,10 @@ public class DataSource {
     }
 
     public void storeLog(ConsoleModel msg) {
-       synchronized (DataSource.class) {
-           mConsoleModels.add(0,msg);
-           checkStore();
-       }
+        synchronized (DataSource.class) {
+            mConsoleModels.add(0, msg);
+            checkStore();
+        }
     }
 
     public void storeNetModel(NetModel netModel) {
@@ -79,7 +79,7 @@ public class DataSource {
         }
     }
 
-    public void backUp(DataSource source){
+    public void backUp(DataSource source) {
         mNetModels = new ArrayList<>(source.mNetModels);
         mConsoleModels = new ArrayList<>(source.mConsoleModels);
         mLastScanResult = source.mLastScanResult;

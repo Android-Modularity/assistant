@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.march.assistant.DragLayout;
-import com.march.common.exts.SizeX;
-import com.march.common.impl.ActivityLifecycleCallback;
-import com.march.assistant.AssistantActivity;
 import com.march.assistant.Assistant;
+import com.march.assistant.AssistantActivity;
+import com.march.assistant.DragLayout;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantActivity;
+import com.march.common.exts.SizeX;
+import com.march.common.impl.ActivityLifecycleCallback;
 
 /**
  * CreateAt : 2018/6/19

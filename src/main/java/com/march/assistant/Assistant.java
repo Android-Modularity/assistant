@@ -26,16 +26,20 @@ import okhttp3.OkHttpClient;
  */
 public class Assistant {
 
-    private DataSource         mDataSource;
-    private RefWatcher         mRefWatcher;
+    private static Assistant sInst;
+    private DataSource mDataSource;
+    private RefWatcher mRefWatcher;
     private StorageInfoManager mStorageInfoManager;
-
     private InitConfig mConfig;
     private FragmentMakeAdapter mFragmentMakeAdapter;
     private ScanResultAdapter mScanResultAdapter;
     private OkHttpInterceptAdapter mOkHttpInterceptAdapter;
 
-    private static Assistant sInst;
+    private Assistant() {
+        mDataSource = new DataSource();
+        mStorageInfoManager = new StorageInfoManager();
+        mStorageInfoManager.backUp();
+    }
 
     public static Assistant getInst() {
         if (sInst == null) {
@@ -46,12 +50,6 @@ public class Assistant {
             }
         }
         return sInst;
-    }
-
-    private Assistant() {
-        mDataSource = new DataSource();
-        mStorageInfoManager = new StorageInfoManager();
-         mStorageInfoManager.backUp();
     }
 
     public static void init(Application app, InitConfig cfg) {

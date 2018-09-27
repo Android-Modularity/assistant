@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/path_tv"
@@ -13,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_first_color"
         android:textSize="16sp"
-        tools:text="getWeexConfig/test"/>
+        tools:text="getWeexConfig/test" />
 
     <TextView
         android:id="@+id/host_tv"
@@ -21,7 +20,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_second_color"
         android:textSize="14sp"
-        tools:text="getWeexConfig/test"/>
+        tools:text="getWeexConfig/test" />
 
     <TextView
         android:id="@+id/detail_tv"
@@ -29,5 +28,5 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_third_color"
         android:textSize="14sp"
-        tools:text="12:23:57 · GET · 200 · OK · 20KB · 262ms"/>
+        tools:text="12:23:57 · GET · 200 · OK · 20KB · 262ms" />
 </LinearLayout>

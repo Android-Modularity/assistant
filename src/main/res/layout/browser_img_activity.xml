@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
@@ -13,17 +12,16 @@
         android:layout_height="match_parent"
         android:scaleType="centerInside"
         android:textColor="@color/text_second_color"
-        android:textSize="14sp"/>
+        android:textSize="14sp" />
 
-    <TextView
-        android:background="#6000"
+    <TextView xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/detail_tv"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="#6000"
         android:padding="10dp"
         android:textColor="@color/white"
         android:textSize="15sp"
-        tools:text="ssss"/>
+        tools:text="ssss" />
 </FrameLayout>

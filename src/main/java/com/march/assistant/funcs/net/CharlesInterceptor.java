@@ -95,7 +95,7 @@ public final class CharlesInterceptor implements Interceptor {
         }
         if (isPlaintext(buffer) && charset != null) {
             String body = buffer.readString(charset);
-            model.setRequestBody(JsonX.toJsonString(body,"解析失败"));
+            model.setRequestBody(JsonX.toJsonString(body, "解析失败"));
             model.setRequestSize(body.getBytes().length);
         } else {
             model.setRequestBody("二进制body");
@@ -188,7 +188,7 @@ public final class CharlesInterceptor implements Interceptor {
                 model.setResponseSize(buffer.size());
             } else if (responseBody.contentLength() != 0) {
                 String body = buffer.clone().readString(charset == null ? Charset.forName("utf-8") : charset);
-                model.setResponseBody(JsonX.toJsonString(body,"解析失败"));
+                model.setResponseBody(JsonX.toJsonString(body, "解析失败"));
                 model.setResponseSize(body.getBytes().length);
             }
         }

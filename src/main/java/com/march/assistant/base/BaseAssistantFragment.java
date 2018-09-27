@@ -26,19 +26,19 @@ public abstract class BaseAssistantFragment extends Fragment {
         return view;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
-    }
-
     public String getTitle() {
         return mTitle;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     public abstract int getLayoutId();
 
     public abstract void initView(View view);
 
-    public boolean onBackPressed(){
+    public boolean onBackPressed() {
         return false;
     }
 }

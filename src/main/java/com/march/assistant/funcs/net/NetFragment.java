@@ -31,9 +31,9 @@ public class NetFragment extends BaseAssistantFragment {
 
     public static WeakReference<NetModel> mCurNetModelRef = new WeakReference<>(null);
 
-    private RecyclerView           mRecyclerView;
+    private RecyclerView mRecyclerView;
     private LightAdapter<NetModel> mLightAdapter;
-    private SimpleDateFormat       mTimeFormat;
+    private SimpleDateFormat mTimeFormat;
 
     @Override
     public int getLayoutId() {
@@ -79,7 +79,7 @@ public class NetFragment extends BaseAssistantFragment {
                         .append("  ·  ")
                         .append(data.getMethod())
                         .append("  ·  ")
-                        .append(String.format(Locale.getDefault(),"%.2f",data.getResponseSize() / 2014f)).append("kb")
+                        .append(String.format(Locale.getDefault(), "%.2f", data.getResponseSize() / 2014f)).append("kb")
                         .append("  ·  ")
                         .append(data.getDuration()).append("ms").toString();
                 HttpUrl httpUrl = data.parseHttpUrl();
@@ -96,6 +96,6 @@ public class NetFragment extends BaseAssistantFragment {
             }
         });
         LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(getActivity()));
-        LinerDividerDecoration.attachRecyclerView(mRecyclerView,R.drawable.divider);
+        LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
     }
 }

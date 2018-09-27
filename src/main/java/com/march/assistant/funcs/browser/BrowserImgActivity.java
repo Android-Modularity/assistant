@@ -13,10 +13,10 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.march.common.exts.LogX;
-import com.march.common.utils.BitmapUtils;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantActivity;
+import com.march.common.exts.LogX;
+import com.march.common.utils.BitmapUtils;
 
 import java.io.File;
 import java.util.Locale;
@@ -44,24 +44,24 @@ public class BrowserImgActivity extends BaseAssistantActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.browser_img_activity);
 
-        String  path= getIntent().getStringExtra(DATA);
-        if(TextUtils.isEmpty(path)){
+        String path = getIntent().getStringExtra(DATA);
+        if (TextUtils.isEmpty(path)) {
             try {
                 ClipData clipData = getIntent().getClipData();
-                if(clipData!=null) {
+                if (clipData != null) {
                     path = clipData.getItemAt(0).getText().toString();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        if(!TextUtils.isEmpty(path)){
-           init(path);
+        if (!TextUtils.isEmpty(path)) {
+            init(path);
         }
     }
 
 
-    public void loadImg(String path){
+    public void loadImg(String path) {
         BitmapFactory.Options bitmapSize = BitmapUtils.getBitmapSize(path);
         int sampleSize = getSampleSize(bitmapSize.outWidth, bitmapSize.outHeight, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
         BitmapFactory.Options opts = new BitmapFactory.Options();
@@ -76,13 +76,13 @@ public class BrowserImgActivity extends BaseAssistantActivity {
         imageView.setImageBitmap(mBitmap);
     }
 
-    public int getSampleSize(int inWidth, int inHeight, int outWidth, int outHeight){
-        int maxIntegerFactor = (int)Math.ceil((double)Math.max((float)inHeight / (float)outHeight, (float)inWidth / (float)outWidth));
+    public int getSampleSize(int inWidth, int inHeight, int outWidth, int outHeight) {
+        int maxIntegerFactor = (int) Math.ceil((double) Math.max((float) inHeight / (float) outHeight, (float) inWidth / (float) outWidth));
         int lesserOrEqualSampleSize = Math.max(1, Integer.highestOneBit(maxIntegerFactor));
         return lesserOrEqualSampleSize << (lesserOrEqualSampleSize < maxIntegerFactor ? 1 : 0);
     }
 
-    private void init(String path){
+    private void init(String path) {
         TextView detailTv = findViewById(R.id.detail_tv);
         if (TextUtils.isEmpty(path)) {
             return;

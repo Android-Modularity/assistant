@@ -2,9 +2,9 @@ package com.march.assistant.common;
 
 import android.text.TextUtils;
 
-import com.march.common.Common;
-import com.march.assistant.DataSource;
 import com.march.assistant.Assistant;
+import com.march.assistant.DataSource;
+import com.march.common.Common;
 import com.march.common.exts.FileX;
 import com.march.common.exts.RecycleX;
 import com.march.common.exts.StreamX;
@@ -28,7 +28,7 @@ public class StorageInfoManager {
 
     private ExecutorService mExecutorService;
     private StorageRunnable mStorageRunnable;
-    private long            mLastStoreTime;
+    private long mLastStoreTime;
 
     public StorageInfoManager() {
         mExecutorService = Executors.newSingleThreadExecutor();

@@ -12,23 +12,24 @@ import okhttp3.HttpUrl;
  *
  * @author chendong
  */
-public class NetModel  {
+public class NetModel {
 
     private String url;
-    private int    code;
+    private int code;
     private String method;
-    private long   startTime;
-    private long   duration;
+    private long startTime;
+    private long duration;
 
     private Map<String, String> requestHeaders;
-    private String              requestBody;
+    private String requestBody;
     private String postForms;
-    private long                requestSize;
+    private long requestSize;
 
     private Map<String, String> responseHeaders;
-    private String              responseBody;
-    private long                responseSize;
+    private String responseBody;
+    private long responseSize;
     private String responseMsg;
+    private HttpUrl httpUrl;
 
     public NetModel() {
     }
@@ -40,8 +41,6 @@ public class NetModel  {
     public void setResponseMsg(String responseMsg) {
         this.responseMsg = responseMsg;
     }
-
-    private HttpUrl httpUrl;
 
     public HttpUrl parseHttpUrl() {
         if (httpUrl == null) {

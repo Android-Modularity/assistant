@@ -15,8 +15,8 @@ import com.march.assistant.Assistant;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantFragment;
 import com.march.assistant.common.CopyRunnable;
-import com.march.assistant.utils.SignUtils;
 import com.march.assistant.utils.AssistantUtils;
+import com.march.assistant.utils.SignUtils;
 import com.march.common.Common;
 import com.march.common.model.AppBuildConfig;
 import com.march.lightadapter.LightAdapter;
@@ -37,9 +37,9 @@ import java.util.List;
  */
 public class ToolsFragment extends BaseAssistantFragment {
 
-    private RecyclerView           mRecyclerView;
+    private RecyclerView mRecyclerView;
     private LightAdapter<ItemWrap> mLightAdapter;
-    private List<ItemWrap>         mItemWraps;
+    private List<ItemWrap> mItemWraps;
 
     @Override
     public int getLayoutId() {
@@ -72,7 +72,7 @@ public class ToolsFragment extends BaseAssistantFragment {
         mItemWraps.add(new ItemWrap("Build.MODEL", android.os.Build.MODEL));
         mItemWraps.add(new ItemWrap("Build.VERSION", android.os.Build.VERSION.RELEASE));
         mItemWraps.add(new ItemWrap("signMd5", SignUtils.getSign(requireActivity())));
-        mItemWraps.add(new ItemWrap("packageName",buildConfig.APPLICATION_ID));
+        mItemWraps.add(new ItemWrap("packageName", buildConfig.APPLICATION_ID));
         mItemWraps.add(new ItemWrap("buildType", buildConfig.BUILD_TYPE));
         mItemWraps.add(new ItemWrap("versionCode", buildConfig.VERSION_CODE));
         mItemWraps.add(new ItemWrap("versionName", buildConfig.VERSION_NAME));
@@ -88,25 +88,6 @@ public class ToolsFragment extends BaseAssistantFragment {
             mItemWraps.add(new ItemWrap("getLargeMemoryClass", activityManager.getLargeMemoryClass()));
         }
 
-    }
-
-    class ItemWrap {
-
-        String   title;
-        String   text;
-        Runnable runnable;
-
-        public ItemWrap(String title, Object text, Runnable runnable) {
-            this.title = title;
-            this.text = String.valueOf(text);
-            this.runnable = runnable;
-        }
-
-        public ItemWrap(String title, Object text) {
-            this.title = title;
-            this.text = String.valueOf(text);
-            this.runnable = new CopyRunnable(requireActivity(), this.text);
-        }
     }
 
     @Override
@@ -138,5 +119,24 @@ public class ToolsFragment extends BaseAssistantFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    class ItemWrap {
+
+        String title;
+        String text;
+        Runnable runnable;
+
+        public ItemWrap(String title, Object text, Runnable runnable) {
+            this.title = title;
+            this.text = String.valueOf(text);
+            this.runnable = runnable;
+        }
+
+        public ItemWrap(String title, Object text) {
+            this.title = title;
+            this.text = String.valueOf(text);
+            this.runnable = new CopyRunnable(requireActivity(), this.text);
+        }
     }
 }

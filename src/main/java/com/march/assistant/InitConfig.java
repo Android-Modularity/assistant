@@ -26,16 +26,6 @@ public class InitConfig {
         return config;
     }
 
-    public InitConfig setShowDebugBtn(boolean showDebugBtn) {
-        this.showDebugBtn = showDebugBtn;
-        return this;
-    }
-
-    public InitConfig setDebug(boolean debug) {
-        this.debug = debug;
-        return this;
-    }
-
     public InitConfig setFragmentMakeAdapter(FragmentMakeAdapter fragmentMakeAdapter) {
         this.fragmentMakeAdapter = fragmentMakeAdapter;
         return this;
@@ -55,7 +45,17 @@ public class InitConfig {
         return showDebugBtn;
     }
 
+    public InitConfig setShowDebugBtn(boolean showDebugBtn) {
+        this.showDebugBtn = showDebugBtn;
+        return this;
+    }
+
     public boolean isDebug() {
         return debug;
+    }
+
+    public InitConfig setDebug(boolean debug) {
+        this.debug = debug;
+        return this;
     }
 }

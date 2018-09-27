@@ -40,11 +40,11 @@ public class NetDetailActivity extends BaseAssistantActivity {
 
     public static final String MODEL = "model";
 
-    private RecyclerView           mRecyclerView;
+    private RecyclerView mRecyclerView;
     private LightAdapter<ItemWrap> mLightAdapter;
-    private SimpleDateFormat       mTimeFormat;
-    private NetModel               mNetModel;
-    private List<ItemWrap>         mItemWraps;
+    private SimpleDateFormat mTimeFormat;
+    private NetModel mNetModel;
+    private List<ItemWrap> mItemWraps;
 
     public static void startActivity(Context context) {
         try {
@@ -52,29 +52,6 @@ public class NetDetailActivity extends BaseAssistantActivity {
             context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    class ItemWrap {
-        String   title;
-        String   text;
-        Runnable runnable ;
-        String desc;
-
-        public ItemWrap(String title, String text, Runnable runnable) {
-            this.desc = concat(title, text);
-            this.runnable = runnable;
-        }
-
-        public ItemWrap(String title, String text) {
-            this.title = title;
-            this.text = text;
-            this.desc = concat(title, text);
-            this.runnable = new CopyRunnable(NetDetailActivity.this, this.text);
-        }
-
-        public ItemWrap(String desc) {
-            this.desc = desc;
         }
     }
 
@@ -93,7 +70,6 @@ public class NetDetailActivity extends BaseAssistantActivity {
         updateAdapter();
     }
 
-
     private String getSizeFormat(long size) {
         return String.format(Locale.getDefault(), "%.2f", size / 2014f) + "kb";
     }
@@ -106,7 +82,7 @@ public class NetDetailActivity extends BaseAssistantActivity {
         mItemWraps = new ArrayList<>();
         HttpUrl httpUrl = mNetModel.parseHttpUrl();
         mItemWraps.add(new ItemWrap("url", AssistantUtils.decode(httpUrl.toString())));
-        mItemWraps.add(new ItemWrap("host",httpUrl.host()));
+        mItemWraps.add(new ItemWrap("host", httpUrl.host()));
         mItemWraps.add(new ItemWrap("path", httpUrl.encodedPath()));
 
         mItemWraps.add(new ItemWrap("method", mNetModel.getMethod()));
@@ -155,7 +131,6 @@ public class NetDetailActivity extends BaseAssistantActivity {
         }
     }
 
-
     public void updateAdapter() {
         mLightAdapter = new LightAdapter<ItemWrap>(this, mItemWraps, R.layout.common_item) {
             @Override
@@ -172,7 +147,30 @@ public class NetDetailActivity extends BaseAssistantActivity {
             }
         });
         LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(this));
-        LinerDividerDecoration.attachRecyclerView(mRecyclerView,R.drawable.divider);
+        LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
+    }
+
+    class ItemWrap {
+        String title;
+        String text;
+        Runnable runnable;
+        String desc;
+
+        public ItemWrap(String title, String text, Runnable runnable) {
+            this.desc = concat(title, text);
+            this.runnable = runnable;
+        }
+
+        public ItemWrap(String title, String text) {
+            this.title = title;
+            this.text = text;
+            this.desc = concat(title, text);
+            this.runnable = new CopyRunnable(NetDetailActivity.this, this.text);
+        }
+
+        public ItemWrap(String desc) {
+            this.desc = desc;
+        }
     }
 }
 
