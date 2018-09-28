@@ -16,7 +16,8 @@ import android.widget.TextView;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantActivity;
 import com.march.common.exts.LogX;
-import com.march.common.utils.BitmapUtils;
+import com.march.common.exts.RecycleX;
+import com.march.common.exts.BitmapX;
 
 import java.io.File;
 import java.util.Locale;
@@ -62,7 +63,7 @@ public class BrowserImgActivity extends BaseAssistantActivity {
 
 
     public void loadImg(String path) {
-        BitmapFactory.Options bitmapSize = BitmapUtils.getBitmapSize(path);
+        BitmapFactory.Options bitmapSize = BitmapX.getBitmapSize(path);
         int sampleSize = getSampleSize(bitmapSize.outWidth, bitmapSize.outHeight, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = sampleSize;
@@ -91,7 +92,7 @@ public class BrowserImgActivity extends BaseAssistantActivity {
         if (!file.exists()) {
             return;
         }
-        BitmapFactory.Options bitmapSize = BitmapUtils.getBitmapSize(path);
+        BitmapFactory.Options bitmapSize = BitmapX.getBitmapSize(path);
         StringBuilder sb = new StringBuilder().append(file.getName())
                 .append("\n")
                 .append(file.getAbsolutePath())
@@ -106,6 +107,6 @@ public class BrowserImgActivity extends BaseAssistantActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BitmapUtils.recycleBitmaps(mBitmap);
+        RecycleX.recycle(mBitmap);
     }
 }
