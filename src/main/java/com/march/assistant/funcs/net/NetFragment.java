@@ -1,5 +1,6 @@
 package com.march.assistant.funcs.net;
 
+import android.graphics.DashPathEffect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -47,6 +48,7 @@ public class NetFragment extends BaseAssistantFragment {
             Assistant.getInst().getDataSource().getNetModels().clear();
             mLightAdapter.getDatas().clear();
             mLightAdapter.update().notifyDataSetChanged();
+            Assistant.getInst().getDataSource().checkStore();
         });
         mTimeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         updateAdapter();
