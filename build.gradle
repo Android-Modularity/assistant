@@ -1,3 +1,4 @@
+apply from: '../scripts/library.gradle'
 dependencies {
     api libs.leakCanaryDebug
     implementation project(path: ':common')
