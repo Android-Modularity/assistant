@@ -15,6 +15,7 @@ import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistantFragment;
 import com.march.assistant.funcs.browser.BrowserTextActivity;
 import com.march.common.Common;
+import com.march.common.exts.ToastX;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
@@ -146,7 +147,12 @@ public class FileFragment extends BaseAssistantFragment {
             intent.setDataAndType(uri, "text/*");
         }
         intent.setClipData(new ClipData("clip", new String[]{}, new ClipData.Item(file.getAbsolutePath())));
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ToastX.show("打开文件失败" + e.getMessage());
+        }
     }
 
     @Override
