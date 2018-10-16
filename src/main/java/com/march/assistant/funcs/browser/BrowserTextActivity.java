@@ -69,20 +69,12 @@ public class BrowserTextActivity extends BaseAssistantActivity {
         if (FileX.isNotExist(path)) {
             return;
         }
-        ExecutorsPool.getInst().execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final String content = StreamX.saveStreamToString(new FileInputStream(path));
-                    mContentTv.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mContentTv.setText(content);
-                        }
-                    });
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+        ExecutorsPool.bg(() -> {
+            try {
+                final String content = StreamX.saveStreamToString(new FileInputStream(path));
+                ExecutorsPool.ui(() -> mContentTv.setText(content));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         });
     }
