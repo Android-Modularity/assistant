@@ -28,7 +28,7 @@ public class StorageInfoManager {
 
     private ExecutorService mExecutorService;
     private StorageRunnable mStorageRunnable;
-    private long mLastStoreTime;
+    private long            mLastStoreTime;
 
     public StorageInfoManager() {
         mExecutorService = Executors.newSingleThreadExecutor();

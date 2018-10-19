@@ -36,9 +36,9 @@ import java.util.List;
  */
 public class FileFragment extends BaseAssistantFragment {
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView            mRecyclerView;
     private LightAdapter<FileModel> mLightAdapter;
-    private FileModel mCurFileModel;
+    private FileModel               mCurFileModel;
 
     @Override
     public int getLayoutId() {

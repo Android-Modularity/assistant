@@ -26,14 +26,14 @@ import okhttp3.OkHttpClient;
  */
 public class Assistant {
 
-    private static Assistant sInst;
-    private DataSource mDataSource;
-    private RefWatcher mRefWatcher;
-    private StorageInfoManager mStorageInfoManager;
-    private InitConfig mConfig;
-    private FragmentMakeAdapter mFragmentMakeAdapter;
-    private ScanResultAdapter mScanResultAdapter;
-    private OkHttpInterceptAdapter mOkHttpInterceptAdapter;
+    private static Assistant              sInst;
+    private        DataSource             mDataSource;
+    private        RefWatcher             mRefWatcher;
+    private        StorageInfoManager     mStorageInfoManager;
+    private        InitConfig             mConfig;
+    private        FragmentMakeAdapter    mFragmentMakeAdapter;
+    private        ScanResultAdapter      mScanResultAdapter;
+    private        OkHttpInterceptAdapter mOkHttpInterceptAdapter;
 
     private Assistant() {
         mDataSource = new DataSource();

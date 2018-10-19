@@ -40,11 +40,11 @@ public class NetDetailActivity extends BaseAssistantActivity {
 
     public static final String MODEL = "model";
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView           mRecyclerView;
     private LightAdapter<ItemWrap> mLightAdapter;
-    private SimpleDateFormat mTimeFormat;
-    private NetModel mNetModel;
-    private List<ItemWrap> mItemWraps;
+    private SimpleDateFormat       mTimeFormat;
+    private NetModel               mNetModel;
+    private List<ItemWrap>         mItemWraps;
 
     public static void startActivity(Context context) {
         try {
@@ -151,10 +151,10 @@ public class NetDetailActivity extends BaseAssistantActivity {
     }
 
     class ItemWrap {
-        String title;
-        String text;
+        String   title;
+        String   text;
         Runnable runnable;
-        String desc;
+        String   desc;
 
         public ItemWrap(String title, String text, Runnable runnable) {
             this.desc = concat(title, text);

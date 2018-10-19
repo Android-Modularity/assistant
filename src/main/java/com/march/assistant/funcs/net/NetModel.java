@@ -15,21 +15,21 @@ import okhttp3.HttpUrl;
 public class NetModel {
 
     private String url;
-    private int code;
+    private int    code;
     private String method;
-    private long startTime;
-    private long duration;
+    private long   startTime;
+    private long   duration;
 
     private Map<String, String> requestHeaders;
-    private String requestBody;
-    private String postForms;
-    private long requestSize;
+    private String              requestBody;
+    private String              postForms;
+    private long                requestSize;
 
     private Map<String, String> responseHeaders;
-    private String responseBody;
-    private long responseSize;
-    private String responseMsg;
-    private HttpUrl httpUrl;
+    private String              responseBody;
+    private long                responseSize;
+    private String              responseMsg;
+    private HttpUrl             httpUrl;
 
     public NetModel() {
     }

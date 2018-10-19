@@ -13,10 +13,10 @@ import com.march.assistant.adapter.ScanResultAdapter;
 public class InitConfig {
 
     boolean showDebugBtn = true;
-    boolean debug = true;
+    boolean debug        = true;
 
-    FragmentMakeAdapter fragmentMakeAdapter;
-    ScanResultAdapter scanResultAdapter;
+    FragmentMakeAdapter    fragmentMakeAdapter;
+    ScanResultAdapter      scanResultAdapter;
     OkHttpInterceptAdapter okHttpInterceptAdapter;
 
     public static InitConfig make(boolean debug, boolean showDebugBtn) {

@@ -36,9 +36,9 @@ import java.util.Map;
 public class AssistantActivity extends BaseAssistantActivity {
 
     public static final String CONSOLE = "控制台";
-    public static final String NET = "网络";
-    public static final String FILE = "文件";
-    public static final String TOOL = "工具";
+    public static final String NET     = "网络";
+    public static final String FILE    = "文件";
+    public static final String TOOL    = "工具";
 
     private static int mTabIndex = 0;
 
@@ -46,7 +46,7 @@ public class AssistantActivity extends BaseAssistantActivity {
     private TabLayout mTitleTabLy;
 
     private FragmentMakeAdapterWrap mFragmentMakeAdapterWrap;
-    private BaseAssistantFragment mCurFragment;
+    private BaseAssistantFragment   mCurFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

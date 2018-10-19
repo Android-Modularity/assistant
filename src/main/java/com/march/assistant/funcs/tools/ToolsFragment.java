@@ -37,9 +37,9 @@ import java.util.List;
  */
 public class ToolsFragment extends BaseAssistantFragment {
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView           mRecyclerView;
     private LightAdapter<ItemWrap> mLightAdapter;
-    private List<ItemWrap> mItemWraps;
+    private List<ItemWrap>         mItemWraps;
 
     @Override
     public int getLayoutId() {
@@ -123,8 +123,8 @@ public class ToolsFragment extends BaseAssistantFragment {
 
     class ItemWrap {
 
-        String title;
-        String text;
+        String   title;
+        String   text;
         Runnable runnable;
 
         public ItemWrap(String title, Object text, Runnable runnable) {

@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ConsoleFragment extends BaseAssistantFragment {
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView               mRecyclerView;
     private LightAdapter<ConsoleModel> mLightAdapter;
 
     @Override

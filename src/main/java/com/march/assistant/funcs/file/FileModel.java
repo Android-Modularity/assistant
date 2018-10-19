@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class FileModel {
 
-    private boolean isTop;
-    private String name;
-    private File file;
-    private FileModel parent;
+    private boolean         isTop;
+    private String          name;
+    private File            file;
+    private FileModel       parent;
     private List<FileModel> children;
-    private int index;
+    private int             index;
 
     public FileModel(File file) {
         this.file = file;

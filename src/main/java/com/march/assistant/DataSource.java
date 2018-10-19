@@ -15,11 +15,11 @@ import java.util.List;
 public class DataSource {
 
     public static final int CONSOLE_LIMIT = 200;
-    public static final int NET_LIMIT = 100;
+    public static final int NET_LIMIT     = 100;
 
     private List<ConsoleModel> mConsoleModels;
-    private List<NetModel> mNetModels;
-    private String mLastScanResult;
+    private List<NetModel>     mNetModels;
+    private String             mLastScanResult;
 
     public DataSource() {
         mConsoleModels = new ArrayList<>();

@@ -1,6 +1,5 @@
 package com.march.assistant.funcs.net;
 
-import android.graphics.DashPathEffect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -32,9 +31,9 @@ public class NetFragment extends BaseAssistantFragment {
 
     public static WeakReference<NetModel> mCurNetModelRef = new WeakReference<>(null);
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView           mRecyclerView;
     private LightAdapter<NetModel> mLightAdapter;
-    private SimpleDateFormat mTimeFormat;
+    private SimpleDateFormat       mTimeFormat;
 
     @Override
     public int getLayoutId() {

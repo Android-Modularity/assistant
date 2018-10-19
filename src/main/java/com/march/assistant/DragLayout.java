@@ -19,14 +19,14 @@ import com.march.common.exts.SizeX;
  */
 public class DragLayout extends FrameLayout {
 
-    private int lastX;
-    private int lastY;
-    private int lastDownX;
-    private int lastDownY;
+    private int  lastX;
+    private int  lastY;
+    private int  lastDownX;
+    private int  lastDownY;
     private long downTime;
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private View.OnClickListener mClickListener;
+    private View.OnClickListener     mClickListener;
     private View.OnLongClickListener mOnLongClickListener;
 
     public DragLayout(Context context) {
