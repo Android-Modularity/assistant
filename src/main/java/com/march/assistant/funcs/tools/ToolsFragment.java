@@ -22,9 +22,9 @@ import com.march.common.model.AppBuildConfig;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
-import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
-import com.march.lightadapter.helper.LightManager;
-import com.march.lightadapter.listener.SimpleItemListener;
+import com.zfy.adapter.decoration.LinerDividerDecoration;
+import com.zfy.adapter.helper.LightManager;
+import com.zfy.adapter.listener.SimpleItemListener;
 
 import java.util.ArrayList;
 import java.util.List;

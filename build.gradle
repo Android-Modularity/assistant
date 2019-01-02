@@ -1,16 +1,17 @@
 apply from: '../scripts/library.gradle'
 dependencies {
-    api libs.leakCanaryDebug
-    implementation project(path: ':common')
-
     implementation libs.appcompat_v7
-    implementation libs.recyclerView_v7
-    implementation libs.design
-    implementation libs.okhttp3
-    implementation libs.lightadapter
-    implementation libs.stetho
-    implementation libs.stetho_okhttp3
-    implementation libs.gson
+
+    debugImplementation project(path: ':common')
+    debugImplementation libs.leakCanaryDebug
+    debugImplementation libs.recyclerView_v7
+    debugImplementation libs.design
+    debugImplementation libs.okhttp3
+    debugImplementation libs.lightadapter
+    debugImplementation libs.stetho
+    debugImplementation libs.stetho_okhttp3
+    debugImplementation libs.gson
+    debugImplementation 'com.yuyh.json:jsonviewer:1.0.6'
 }
 
 //apply plugin: 'bintray-release'

@@ -1,4 +1,4 @@
-package com.march.assistant.funcs.net;
+package com.march.assistant.module.net;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,16 +9,19 @@ import android.text.Html;
 import android.text.TextUtils;
 
 import com.march.assistant.R;
-import com.march.assistant.base.BaseAssistantActivity;
+import com.march.assistant.base.BaseAssistActivity;
 import com.march.assistant.common.CopyRunnable;
-import com.march.assistant.funcs.browser.BrowserTextActivity;
+import com.march.assistant.module.browser.ViewJsonActivity;
+import com.march.assistant.module.browser.ViewTextActivity;
 import com.march.assistant.utils.AssistantUtils;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
-import com.zfy.adapter.decoration.LinerDividerDecoration;
-import com.zfy.adapter.helper.LightManager;
-import com.zfy.adapter.listener.SimpleItemListener;
+import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
+import com.march.lightadapter.helper.LightManager;
+import com.march.lightadapter.listener.SimpleItemListener;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ import okhttp3.HttpUrl;
  *
  * @author chendong
  */
-public class NetDetailActivity extends BaseAssistantActivity {
+public class NetDetailActivity extends BaseAssistActivity {
 
     public static final String MODEL = "model";
 
@@ -100,20 +103,16 @@ public class NetDetailActivity extends BaseAssistantActivity {
         if (TextUtils.isEmpty(mNetModel.getResponseBody())) {
             mItemWraps.add(new ItemWrap("response body", "没有内容"));
         } else {
-            mItemWraps.add(new ItemWrap("response body", "点击查看内容", new Runnable() {
-                @Override
-                public void run() {
-                    BrowserTextActivity.startActivity(NetDetailActivity.this, mNetModel.getResponseBody());
-                }
-            }));
+            mItemWraps.add(new ItemWrap("response body", "点击查看内容", () -> viewText(mNetModel.getResponseBody())));
         }
         mItemWraps.add(new ItemWrap("----------------------- request ------------------------"));
         mItemWraps.add(new ItemWrap("request size", getSizeFormat(mNetModel.getRequestSize())));
         if (TextUtils.isEmpty(mNetModel.getRequestBody())) {
             mItemWraps.add(new ItemWrap("request body", "没有内容"));
         } else {
-            mItemWraps.add(new ItemWrap("request body", "点击查看内容", () ->
-                    BrowserTextActivity.startActivity(NetDetailActivity.this, mNetModel.getRequestBody())));
+            mItemWraps.add(new ItemWrap("request body", "点击查看内容", () -> {
+                viewText(mNetModel.getRequestBody());
+            }));
         }
         mItemWraps.add(new ItemWrap("form", mNetModel.getPostForms()));
         mItemWraps.add(new ItemWrap("query", httpUrl.encodedQuery()));
@@ -165,11 +164,24 @@ public class NetDetailActivity extends BaseAssistantActivity {
             this.title = title;
             this.text = text;
             this.desc = concat(title, text);
-            this.runnable = new CopyRunnable(NetDetailActivity.this, this.text);
+            this.runnable = new CopyRunnable(this.text);
         }
 
         public ItemWrap(String desc) {
             this.desc = desc;
+        }
+    }
+
+
+    private void viewText(String text) {
+        try {
+            JSONObject jsonObject = new JSONObject(text);
+            if (jsonObject.length() > 0) {
+                ViewJsonActivity.startActivity(this, text, null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            ViewTextActivity.startActivity(this, text, null);
         }
     }
 }

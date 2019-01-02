@@ -1,27 +1,26 @@
-package com.march.assistant.funcs.file;
+package com.march.assistant.module.file;
 
 import android.annotation.TargetApi;
-import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.march.assistant.R;
-import com.march.assistant.base.BaseAssistantFragment;
-import com.march.assistant.funcs.browser.BrowserTextActivity;
-import com.march.common.Common;
+import com.march.assistant.base.BaseAssistFragment;
+import com.march.assistant.module.browser.ViewTextActivity;
 import com.march.common.exts.ToastX;
+import com.march.common.exts.UriX;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
-import com.zfy.adapter.decoration.LinerDividerDecoration;
-import com.zfy.adapter.helper.LightManager;
-import com.zfy.adapter.listener.SimpleItemListener;
+import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
+import com.march.lightadapter.helper.LightManager;
+import com.march.lightadapter.listener.SimpleItemListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,7 +33,14 @@ import java.util.List;
  *
  * @author chendong
  */
-public class FileFragment extends BaseAssistantFragment {
+public class FileFragment extends BaseAssistFragment {
+
+    public static FileFragment newInstance() {
+        Bundle args = new Bundle();
+        FileFragment fragment = new FileFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     private RecyclerView            mRecyclerView;
     private LightAdapter<FileModel> mLightAdapter;
@@ -126,28 +132,21 @@ public class FileFragment extends BaseAssistantFragment {
         return false;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void openFile(File file) {
         if (checkSuffix(file.getName(), "log", "txt", "js", "html", "htm", ".0")) {
-            BrowserTextActivity.startActivity(getActivity(), file.getAbsolutePath());
+            ViewTextActivity.startActivity(getActivity(), null, file.getAbsolutePath());
             return;
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(requireActivity(), Common.exports.appConfig.APPLICATION_ID + ".fileProvider", file);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        } else {
-            uri = Uri.fromFile(file);
-        }
-        if (checkSuffix(file.getName(), "png", "jpg", "gif", "jpeg", "webp")) {
-            intent.setDataAndType(uri, "image/*");
-        } else if (checkSuffix(file.getName(), "log", "txt", "js", "html", "htm")) {
-            intent.setDataAndType(uri, "text/*");
-        }
-        intent.setClipData(new ClipData("clip", new String[]{}, new ClipData.Item(file.getAbsolutePath())));
         try {
+            uri = UriX.fromFile(getActivity(), file);
+            if (checkSuffix(file.getName(), "png", "jpg", "gif", "jpeg", "webp")) {
+                intent.setDataAndType(uri, "image/*");
+            } else if (checkSuffix(file.getName(), "log", "txt", "js", "html", "htm")) {
+                intent.setDataAndType(uri, "text/*");
+            }
             startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();

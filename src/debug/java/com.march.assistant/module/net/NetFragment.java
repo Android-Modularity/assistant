@@ -1,17 +1,20 @@
-package com.march.assistant.funcs.net;
+package com.march.assistant.module.net;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.march.assistant.Assistant;
+import com.march.assistant.AssistantDebugImpl;
+import com.march.assistant.DataSource;
 import com.march.assistant.R;
-import com.march.assistant.base.BaseAssistantFragment;
+import com.march.assistant.base.BaseAssistFragment;
 import com.march.lightadapter.LightAdapter;
 import com.march.lightadapter.LightHolder;
 import com.march.lightadapter.LightInjector;
-import com.zfy.adapter.decoration.LinerDividerDecoration;
-import com.zfy.adapter.helper.LightManager;
-import com.zfy.adapter.listener.SimpleItemListener;
+import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
+import com.march.lightadapter.helper.LightManager;
+import com.march.lightadapter.listener.SimpleItemListener;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -27,7 +30,14 @@ import okhttp3.HttpUrl;
  *
  * @author chendong
  */
-public class NetFragment extends BaseAssistantFragment {
+public class NetFragment extends BaseAssistFragment {
+
+    public static NetFragment newInstance() {
+        Bundle args = new Bundle();
+        NetFragment fragment = new NetFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public static WeakReference<NetModel> mCurNetModelRef = new WeakReference<>(null);
 
@@ -44,10 +54,11 @@ public class NetFragment extends BaseAssistantFragment {
     public void initView(View view) {
         mRecyclerView = view.findViewById(R.id.data_rv);
         view.findViewById(R.id.btn).setOnClickListener(v -> {
-            Assistant.getInst().getDataSource().getNetModels().clear();
+            DataSource dataSource = ((AssistantDebugImpl) Assistant.assist()).dataSource();
+            dataSource.netModels().clear();
             mLightAdapter.getDatas().clear();
             mLightAdapter.update().notifyDataSetChanged();
-            Assistant.getInst().getDataSource().checkStore();
+            dataSource.flush();
         });
         mTimeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         updateAdapter();
@@ -67,7 +78,7 @@ public class NetFragment extends BaseAssistantFragment {
     }
 
     public void updateAdapter() {
-        List<NetModel> netModels = Assistant.getInst().getDataSource().getNetModels();
+        List<NetModel> netModels = ((AssistantDebugImpl) Assistant.assist()).dataSource().netModels();
         if (mLightAdapter != null) {
             mLightAdapter.update().update(netModels);
             return;

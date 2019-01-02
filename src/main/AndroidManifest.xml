@@ -3,17 +3,13 @@
     package="com.march.assistant">
 
     <application>
-        <activity android:name=".AssistantActivity" />
+        <activity android:name=".EntryActivity" />
 
-        <activity android:name=".funcs.net.NetDetailActivity" />
+        <activity android:name=".module.net.NetDetailActivity" />
 
-        <activity android:name=".funcs.browser.BrowserTextActivity">
-            <!--<intent-filter>-->
-            <!--&lt;!&ndash;接受文本分享 text/plain&ndash;&gt;-->
-            <!--<data android:mimeType="text/*"/>-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity android:name=".funcs.browser.BrowserImgActivity">
+        <activity android:name=".module.browser.ViewTextActivity" />
+        <activity android:name=".module.browser.ViewJsonActivity" />
+        <activity android:name=".module.browser.ViewImgActivity">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <!--接受单个文件分享-->
                 <action android:name="android.intent.action.VIEW" />
