@@ -25,9 +25,7 @@ public class AssistOpts {
     // url 拦截规则
     private UrlInterceptCallback shouldInterceptUrlCallback;
 
-    private Class  buildClazz;
-    private String channel;
-    
+
     private AssistOpts() {
         this.tabs = new ArrayList<>();
     }
@@ -43,11 +41,6 @@ public class AssistOpts {
         return assistOpts;
     }
 
-    public AssistOpts config(Class buildClazz, String channel) {
-        this.buildClazz = buildClazz;
-        this.channel = channel;
-        return this;
-    }
 
     public AssistOpts addTab(AssistTab tab) {
         tabs.add(tab);
@@ -90,12 +83,5 @@ public class AssistOpts {
         return shouldInterceptUrlCallback;
     }
 
-    public Class getBuildClazz() {
-        return buildClazz;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
 }
 

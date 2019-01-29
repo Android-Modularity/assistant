@@ -4,9 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.march.assistant.Assistant;
 import com.march.assistant.AssistantDebugImpl;
-import com.march.assistant.IAssistant;
 import com.march.assistant.callback.UrlInterceptCallback;
-import com.march.common.exts.JsonX;
+import com.march.common.x.JsonX;
 
 import java.io.EOFException;
 import java.io.IOException;

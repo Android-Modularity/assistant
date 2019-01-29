@@ -14,8 +14,8 @@ import com.march.assistant.base.BaseAssistActivity;
 import com.march.assistant.base.BaseAssistFragment;
 import com.march.assistant.model.AssistTab;
 import com.march.assistant.utils.AssistantUtils;
-import com.march.common.exts.ClipboardX;
-import com.march.common.exts.EmptyX;
+import com.march.common.x.ClipboardX;
+import com.march.common.x.EmptyX;
 
 import java.util.ArrayList;
 import java.util.Collections;

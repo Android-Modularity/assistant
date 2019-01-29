@@ -3,8 +3,8 @@ package com.march.assistant.common;
 import android.text.TextUtils;
 
 import com.march.common.Common;
-import com.march.common.exts.ClipboardX;
-import com.march.common.exts.ToastX;
+import com.march.common.x.ClipboardX;
+import com.march.common.x.ToastX;
 
 /**
  * CreateAt : 2018/6/13

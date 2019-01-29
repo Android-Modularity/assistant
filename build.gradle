@@ -2,7 +2,7 @@ apply from: '../scripts/library.gradle'
 dependencies {
     implementation libs.appcompat_v7
 
-    debugImplementation project(path: ':common')
+    debugImplementation libs.common
     debugImplementation libs.leakCanaryDebug
     debugImplementation libs.recyclerView_v7
     debugImplementation libs.design

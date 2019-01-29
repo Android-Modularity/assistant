@@ -12,7 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.march.common.Common;
-import com.march.common.exts.LogX;
+import com.march.common.x.LogX;
 import com.march.common.mgrs.ActivityMgr;
 import com.march.common.model.WeakContext;
 

@@ -6,15 +6,14 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.TextView;
 
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistActivity;
 import com.march.assistant.common.AssistValues;
-import com.march.common.exts.EmptyX;
-import com.march.common.exts.FileX;
-import com.march.common.exts.StreamX;
+import com.march.common.x.EmptyX;
+import com.march.common.x.FileX;
+import com.march.common.x.StreamX;
 import com.march.common.pool.ExecutorsPool;
 
 import java.io.FileInputStream;

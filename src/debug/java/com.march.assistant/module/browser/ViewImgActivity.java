@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistActivity;
-import com.march.common.exts.BitmapX;
-import com.march.common.exts.LogX;
-import com.march.common.exts.RecycleX;
+import com.march.common.x.BitmapX;
+import com.march.common.x.LogX;
+import com.march.common.x.RecycleX;
 
 import java.io.File;
 import java.util.Locale;

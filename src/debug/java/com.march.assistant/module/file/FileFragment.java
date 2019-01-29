@@ -7,20 +7,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistFragment;
 import com.march.assistant.module.browser.ViewTextActivity;
-import com.march.common.exts.ToastX;
-import com.march.common.exts.UriX;
-import com.march.lightadapter.LightAdapter;
-import com.march.lightadapter.LightHolder;
-import com.march.lightadapter.LightInjector;
-import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
-import com.march.lightadapter.helper.LightManager;
-import com.march.lightadapter.listener.SimpleItemListener;
+import com.march.common.x.ToastX;
+import com.march.common.x.UriX;
+import com.zfy.adapter.LightAdapter;
+import com.zfy.adapter.extend.decoration.LinearDividerDecoration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,37 +82,33 @@ public class FileFragment extends BaseAssistFragment {
     public void updateAdapter() {
         List<FileModel> children = mCurFileModel.getChildren();
         if (mLightAdapter != null) {
-            mLightAdapter.update().update(children);
+            mLightAdapter.setDatas(children);
+            mLightAdapter.notifyItem().change();
             if (mCurFileModel.getIndex() > 0 && mCurFileModel.getIndex() < mLightAdapter.getDatas().size()) {
                 mRecyclerView.scrollToPosition(mCurFileModel.getIndex());
             }
             return;
         }
-        mLightAdapter = new LightAdapter<FileModel>(getActivity(), children, R.layout.file_item) {
-            @Override
-            public void onBindView(LightHolder holder, FileModel data, int pos, int type) {
-                boolean isDir = data.getFile().isDirectory();
-                holder.setText(R.id.file_name_tv, data.getName())
-                        .setText(R.id.file_type_tv, isDir ? "目录" : "文件")
-                        .setBgColor(R.id.file_type_tv, Color.parseColor(isDir ? "#fdb325" : "#1eb271"))
-                        .setText(R.id.file_desc_tv, data.getFile().getAbsolutePath());
-            }
-        };
-        mLightAdapter.setOnItemListener(new SimpleItemListener<FileModel>() {
-            @Override
-            public void onClick(int pos, LightHolder holder, FileModel data) {
-                boolean isDir = data.getFile().isDirectory();
-                if (isDir) {
-                    mCurFileModel.setIndex(pos);
-                    mCurFileModel = data;
-                    updateAdapter();
-                } else {
-                    openFile(data.getFile());
-                }
+        mLightAdapter = new LightAdapter<>(children, R.layout.file_item);
+        mLightAdapter.setBindCallback((holder, data, extra) -> {
+            holder.setText(R.id.file_name_tv, data.getName())
+                    .setText(R.id.file_type_tv, data.getFile().isDirectory() ? "目录" : "文件")
+                    .setBgColor(R.id.file_type_tv, Color.parseColor(data.getFile().isDirectory() ? "#fdb325" : "#1eb271"))
+                    .setText(R.id.file_desc_tv, data.getFile().getAbsolutePath());
+        });
+        mLightAdapter.setClickEvent((holder, data, extra) -> {
+            boolean isDir = data.getFile().isDirectory();
+            if (isDir) {
+                mCurFileModel.setIndex(extra.modelIndex);
+                mCurFileModel = data;
+                updateAdapter();
+            } else {
+                openFile(data.getFile());
             }
         });
-        LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(getActivity()));
-        LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
+        mRecyclerView.addItemDecoration(new LinearDividerDecoration(getContext(), LinearDividerDecoration.VERTICAL, R.drawable.divider));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mLightAdapter);
         if (mCurFileModel.getIndex() > 0 && mCurFileModel.getIndex() < mLightAdapter.getDatas().size()) {
             mRecyclerView.scrollToPosition(mCurFileModel.getIndex());
         }

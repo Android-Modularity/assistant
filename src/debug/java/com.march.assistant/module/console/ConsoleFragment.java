@@ -1,6 +1,7 @@
 package com.march.assistant.module.console;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -8,11 +9,8 @@ import com.march.assistant.Assistant;
 import com.march.assistant.AssistantDebugImpl;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistFragment;
-import com.march.lightadapter.LightAdapter;
-import com.march.lightadapter.LightHolder;
-import com.march.lightadapter.LightInjector;
-import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
-import com.march.lightadapter.helper.LightManager;
+import com.zfy.adapter.LightAdapter;
+import com.zfy.adapter.extend.decoration.LinearDividerDecoration;
 
 import java.util.List;
 
@@ -55,19 +53,19 @@ public class ConsoleFragment extends BaseAssistFragment {
     public void updateAdapter() {
         List<ConsoleModel> logs = ((AssistantDebugImpl) Assistant.assist()).dataSource().getConsoleModels();
         if (mLightAdapter != null) {
-            mLightAdapter.update().update(logs);
+            mLightAdapter.setDatas(logs);
+            mLightAdapter.notifyItem().change();
             return;
         }
-        mLightAdapter = new LightAdapter<ConsoleModel>(getActivity(), logs, R.layout.console_item) {
-            @Override
-            public void onBindView(LightHolder holder, ConsoleModel data, int pos, int type) {
-                if (data != null) {
-                    holder.setText(R.id.tv, data.getTag() + " : " + data.getMsg());
-                }
+        mLightAdapter = new LightAdapter<>(logs, R.layout.console_item);
+        mLightAdapter.setBindCallback((holder, data, extra) -> {
+            if (data != null) {
+                holder.setText(R.id.tv, data.getTag() + " : " + data.getMsg());
             }
-        };
-        LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(getActivity()));
-        LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
+        });
+        mRecyclerView.addItemDecoration(new LinearDividerDecoration(getContext(), LinearDividerDecoration.VERTICAL, R.drawable.divider));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mLightAdapter);
     }
 
 }

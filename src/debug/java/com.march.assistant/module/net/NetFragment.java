@@ -1,6 +1,7 @@
 package com.march.assistant.module.net;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -9,12 +10,8 @@ import com.march.assistant.AssistantDebugImpl;
 import com.march.assistant.DataSource;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistFragment;
-import com.march.lightadapter.LightAdapter;
-import com.march.lightadapter.LightHolder;
-import com.march.lightadapter.LightInjector;
-import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
-import com.march.lightadapter.helper.LightManager;
-import com.march.lightadapter.listener.SimpleItemListener;
+import com.zfy.adapter.LightAdapter;
+import com.zfy.adapter.extend.decoration.LinearDividerDecoration;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -57,7 +54,7 @@ public class NetFragment extends BaseAssistFragment {
             DataSource dataSource = ((AssistantDebugImpl) Assistant.assist()).dataSource();
             dataSource.netModels().clear();
             mLightAdapter.getDatas().clear();
-            mLightAdapter.update().notifyDataSetChanged();
+            mLightAdapter.notifyItem().change();
             dataSource.flush();
         });
         mTimeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
@@ -80,34 +77,31 @@ public class NetFragment extends BaseAssistFragment {
     public void updateAdapter() {
         List<NetModel> netModels = ((AssistantDebugImpl) Assistant.assist()).dataSource().netModels();
         if (mLightAdapter != null) {
-            mLightAdapter.update().update(netModels);
+            mLightAdapter.setDatas(netModels);
+            mLightAdapter.notifyItem().change();
             return;
         }
-        mLightAdapter = new LightAdapter<NetModel>(getActivity(), netModels, R.layout.net_item) {
-            @Override
-            public void onBindView(LightHolder holder, NetModel data, int pos, int type) {
-                String detail = new StringBuilder()
-                        .append(mTimeFormat.format(new Date(data.getStartTime())))
-                        .append("  ·  ")
-                        .append(data.getMethod())
-                        .append("  ·  ")
-                        .append(String.format(Locale.getDefault(), "%.2f", data.getResponseSize() / 2014f)).append("kb")
-                        .append("  ·  ")
-                        .append(data.getDuration()).append("ms").toString();
-                HttpUrl httpUrl = data.parseHttpUrl();
-                holder.setText(R.id.path_tv, httpUrl.encodedPath())
-                        .setText(R.id.host_tv, httpUrl.host())
-                        .setText(R.id.detail_tv, detail);
-            }
-        };
-        mLightAdapter.setOnItemListener(new SimpleItemListener<NetModel>() {
-            @Override
-            public void onClick(int pos, LightHolder holder, NetModel data) {
-                mCurNetModelRef = new WeakReference<>(data);
-                NetDetailActivity.startActivity(getActivity());
-            }
+        mLightAdapter = new LightAdapter<NetModel>(netModels, R.layout.net_item);
+        mLightAdapter.setBindCallback((holder, data, extra) -> {
+            String detail = new StringBuilder()
+                    .append(mTimeFormat.format(new Date(data.getStartTime())))
+                    .append("  ·  ")
+                    .append(data.getMethod())
+                    .append("  ·  ")
+                    .append(String.format(Locale.getDefault(), "%.2f", data.getResponseSize() / 2014f)).append("kb")
+                    .append("  ·  ")
+                    .append(data.getDuration()).append("ms").toString();
+            HttpUrl httpUrl = data.parseHttpUrl();
+            holder.setText(R.id.path_tv, httpUrl.encodedPath())
+                    .setText(R.id.host_tv, httpUrl.host())
+                    .setText(R.id.detail_tv, detail);
         });
-        LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(getActivity()));
-        LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
+        mLightAdapter.setClickEvent((holder, data, extra) -> {
+            mCurNetModelRef = new WeakReference<>(data);
+            NetDetailActivity.startActivity(getActivity());
+        });
+        mRecyclerView.addItemDecoration(new LinearDividerDecoration(getContext(), LinearDividerDecoration.VERTICAL, R.drawable.divider));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mLightAdapter);
     }
 }

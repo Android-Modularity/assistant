@@ -6,7 +6,6 @@ import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.march.assistant.common.AssistValues;
 import com.march.assistant.common.AssistantActivityLifeCallback;
-import com.march.assistant.common.AssistantJsonAdapterImpl;
 import com.march.assistant.model.AssistInfo;
 import com.march.assistant.model.AssistOpts;
 import com.march.assistant.model.AssistTab;
@@ -15,8 +14,6 @@ import com.march.assistant.module.file.FileFragment;
 import com.march.assistant.module.net.CharlesInterceptor;
 import com.march.assistant.module.net.NetFragment;
 import com.march.assistant.module.tools.ToolsFragment;
-import com.march.common.Common;
-import com.march.common.exts.ToastX;
 import com.march.common.mgrs.KVMgr;
 import com.squareup.leakcanary.AndroidExcludedRefs;
 import com.squareup.leakcanary.DisplayLeakService;
@@ -42,16 +39,6 @@ public class AssistantDebugImpl implements IAssistant {
 
     @Override
     public void init(Application app, AssistOpts opts) {
-        // init common
-        if (!Common.exports.init) {
-            Common.init(app, opts.getBuildClazz());
-            Common.appConfig().CHANNEL = opts.getChannel();
-            Common.exports.jsonParser = new AssistantJsonAdapterImpl();
-            ToastX.Config config = new ToastX.Config();
-            config.setOneToast(false);
-            ToastX.init(config);
-        }
-        //
         mAssistOpts = opts;
         mAssistInfo = KVMgr.getInst().getObj(AssistValues.KEY_INFO, AssistInfo.class);
         if (mAssistInfo == null) {

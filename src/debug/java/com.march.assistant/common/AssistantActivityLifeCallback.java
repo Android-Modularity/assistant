@@ -13,7 +13,7 @@ import com.march.assistant.DragLayout;
 import com.march.assistant.EntryActivity;
 import com.march.assistant.R;
 import com.march.assistant.base.BaseAssistActivity;
-import com.march.common.exts.SizeX;
+import com.march.common.x.SizeX;
 import com.march.common.impl.ActivityLifecycleCallback;
 
 /**

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -14,12 +15,8 @@ import com.march.assistant.common.CopyRunnable;
 import com.march.assistant.module.browser.ViewJsonActivity;
 import com.march.assistant.module.browser.ViewTextActivity;
 import com.march.assistant.utils.AssistantUtils;
-import com.march.lightadapter.LightAdapter;
-import com.march.lightadapter.LightHolder;
-import com.march.lightadapter.LightInjector;
-import com.march.lightadapter.extend.decoration.LinerDividerDecoration;
-import com.march.lightadapter.helper.LightManager;
-import com.march.lightadapter.listener.SimpleItemListener;
+import com.zfy.adapter.LightAdapter;
+import com.zfy.adapter.extend.decoration.LinearDividerDecoration;
 
 import org.json.JSONObject;
 
@@ -131,22 +128,19 @@ public class NetDetailActivity extends BaseAssistActivity {
     }
 
     public void updateAdapter() {
-        mLightAdapter = new LightAdapter<ItemWrap>(this, mItemWraps, R.layout.common_item) {
-            @Override
-            public void onBindView(LightHolder holder, ItemWrap data, int pos, int type) {
-                holder.setText(R.id.content_tv, Html.fromHtml(data.desc, null, null));
-            }
-        };
-        mLightAdapter.setOnItemListener(new SimpleItemListener<ItemWrap>() {
-            @Override
-            public void onClick(int pos, LightHolder holder, ItemWrap data) {
-                if (data.runnable != null) {
-                    data.runnable.run();
-                }
+        mLightAdapter = new LightAdapter<ItemWrap>(mItemWraps, R.layout.common_item);
+        mLightAdapter.setBindCallback((holder, data, extra) -> {
+            holder.setText(R.id.content_tv, Html.fromHtml(data.desc, null, null));
+
+        });
+        mLightAdapter.setClickEvent((holder, data, extra) -> {
+            if (data.runnable != null) {
+                data.runnable.run();
             }
         });
-        LightInjector.initAdapter(mLightAdapter, this, mRecyclerView, LightManager.vLinear(this));
-        LinerDividerDecoration.attachRecyclerView(mRecyclerView, R.drawable.divider);
+        mRecyclerView.addItemDecoration(new LinearDividerDecoration(this, LinearDividerDecoration.VERTICAL, R.drawable.divider));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mLightAdapter);
     }
 
     class ItemWrap {

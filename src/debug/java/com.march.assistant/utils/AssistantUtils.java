@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.march.common.exts.ToastX;
+import com.march.common.x.ToastX;
 
 import java.net.URLDecoder;
 
