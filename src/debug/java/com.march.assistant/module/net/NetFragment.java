@@ -81,7 +81,7 @@ public class NetFragment extends BaseAssistFragment {
             mLightAdapter.notifyItem().change();
             return;
         }
-        mLightAdapter = new LightAdapter<NetModel>(netModels, R.layout.net_item);
+        mLightAdapter = new LightAdapter<>(netModels, R.layout.net_item);
         mLightAdapter.setBindCallback((holder, data, extra) -> {
             String detail = new StringBuilder()
                     .append(mTimeFormat.format(new Date(data.getStartTime())))

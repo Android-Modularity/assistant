@@ -15,6 +15,9 @@ import com.march.assistant.common.CopyRunnable;
 import com.march.assistant.module.browser.ViewJsonActivity;
 import com.march.assistant.module.browser.ViewTextActivity;
 import com.march.assistant.utils.AssistantUtils;
+import com.march.common.x.ClipboardX;
+import com.march.common.x.LogX;
+import com.march.common.x.ToastX;
 import com.zfy.adapter.LightAdapter;
 import com.zfy.adapter.extend.decoration.LinearDividerDecoration;
 
@@ -100,21 +103,34 @@ public class NetDetailActivity extends BaseAssistActivity {
         if (TextUtils.isEmpty(mNetModel.getResponseBody())) {
             mItemWraps.add(new ItemWrap("response body", "没有内容"));
         } else {
-            mItemWraps.add(new ItemWrap("response body", "点击查看内容", () -> viewText(mNetModel.getResponseBody())));
+            ItemWrap wrap = new ItemWrap("response body", "点击查看/长按复制", () -> viewText(mNetModel.getResponseBody()));
+            wrap.pressAction = () -> {
+                ClipboardX.copy(this, mNetModel.getResponseBody());
+                LogX.e(mNetModel.getResponseBody());
+                ToastX.show("已复制，日志同步打印");
+
+            };
+            mItemWraps.add(wrap);
         }
         mItemWraps.add(new ItemWrap("----------------------- request ------------------------"));
         mItemWraps.add(new ItemWrap("request size", getSizeFormat(mNetModel.getRequestSize())));
         if (TextUtils.isEmpty(mNetModel.getRequestBody())) {
             mItemWraps.add(new ItemWrap("request body", "没有内容"));
         } else {
-            mItemWraps.add(new ItemWrap("request body", "点击查看内容", () -> {
+            ItemWrap wrap = new ItemWrap("request body", "点击查看内容", () -> {
                 viewText(mNetModel.getRequestBody());
-            }));
+            });
+            wrap.pressAction = () -> {
+                ClipboardX.copy(this, mNetModel.getRequestBody());
+                LogX.e(mNetModel.getRequestBody());
+                ToastX.show("已复制，日志同步打印");
+            };
+            mItemWraps.add(wrap);
         }
         mItemWraps.add(new ItemWrap("form", mNetModel.getPostForms()));
         mItemWraps.add(new ItemWrap("query", httpUrl.encodedQuery()));
         Set<String> requestQueryKeys = httpUrl.queryParameterNames();
-        if (requestQueryKeys != null && !requestQueryKeys.isEmpty()) {
+        if (!requestQueryKeys.isEmpty()) {
             for (String key : requestQueryKeys) {
                 mItemWraps.add(new ItemWrap("[Query]" + key, AssistantUtils.decode(httpUrl.queryParameter(key))));
             }
@@ -128,14 +144,19 @@ public class NetDetailActivity extends BaseAssistActivity {
     }
 
     public void updateAdapter() {
-        mLightAdapter = new LightAdapter<ItemWrap>(mItemWraps, R.layout.common_item);
+        mLightAdapter = new LightAdapter<>(mItemWraps, R.layout.common_item);
         mLightAdapter.setBindCallback((holder, data, extra) -> {
             holder.setText(R.id.content_tv, Html.fromHtml(data.desc, null, null));
 
         });
         mLightAdapter.setClickEvent((holder, data, extra) -> {
-            if (data.runnable != null) {
-                data.runnable.run();
+            if (data.clickAction != null) {
+                data.clickAction.run();
+            }
+        });
+        mLightAdapter.setLongPressEvent((holder, data, extra) -> {
+            if (data.pressAction != null) {
+                data.pressAction.run();
             }
         });
         mRecyclerView.addItemDecoration(new LinearDividerDecoration(this, LinearDividerDecoration.VERTICAL, R.drawable.divider));
@@ -146,19 +167,20 @@ public class NetDetailActivity extends BaseAssistActivity {
     class ItemWrap {
         String   title;
         String   text;
-        Runnable runnable;
+        Runnable clickAction;
+        Runnable pressAction;
         String   desc;
 
         public ItemWrap(String title, String text, Runnable runnable) {
             this.desc = concat(title, text);
-            this.runnable = runnable;
+            this.clickAction = runnable;
         }
 
         public ItemWrap(String title, String text) {
             this.title = title;
             this.text = text;
             this.desc = concat(title, text);
-            this.runnable = new CopyRunnable(this.text);
+            this.clickAction = new CopyRunnable(this.text);
         }
 
         public ItemWrap(String desc) {

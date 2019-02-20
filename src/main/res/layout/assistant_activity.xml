@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <android.support.design.widget.TabLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.design.widget.TabLayout
         android:id="@+id/title_tably"
         android:layout_width="match_parent"
         android:layout_height="45dp"

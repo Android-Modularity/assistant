@@ -17,6 +17,7 @@ public interface IAssistant {
      * 初始化
      *
      * @param app application
+     * @param opts opts
      */
     void init(Application app, AssistOpts opts);
 

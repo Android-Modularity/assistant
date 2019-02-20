@@ -29,7 +29,7 @@ import okhttp3.OkHttpClient;
  *
  * @author chendong
  */
-public class AssistantDebugImpl implements IAssistant {
+public class        AssistantDebugImpl implements IAssistant {
 
     private AssistOpts mAssistOpts;
     private AssistInfo mAssistInfo;

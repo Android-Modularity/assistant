@@ -1,16 +1,18 @@
-apply from: '../scripts/library.gradle'
-dependencies {
-    implementation libs.appcompat_v7
+apply from: '../scripts/module.gradle'
 
-    debugImplementation libs.common
-    debugImplementation libs.leakCanaryDebug
-    debugImplementation libs.recyclerView_v7
-    debugImplementation libs.design
-    debugImplementation libs.okhttp3
-    debugImplementation libs.lightadapter
-    debugImplementation libs.stetho
-    debugImplementation libs.stetho_okhttp3
-    debugImplementation libs.gson
+dependencies {
+    implementation deps.appcompat_v7
+    implementation deps.design
+
+    debugImplementation deps.common
+    debugImplementation deps.leakCanaryDebug
+    debugImplementation deps.recyclerView_v7
+    debugImplementation deps.design
+    debugImplementation deps.okhttp3
+    debugImplementation deps.lightadapter
+    debugImplementation deps.stetho
+    debugImplementation deps.stetho_okhttp3
+    debugImplementation deps.gson
     debugImplementation 'com.yuyh.json:jsonviewer:1.0.6'
 }
 
@@ -18,8 +20,8 @@ dependencies {
 //publish {
 //    userOrg = 'zfy'
 //    groupId = 'com.zfy'
-//    artifactId = 'assistant'
-//    publishVersion = '0.0.1'
+//    artifactId = 'assistant-debug'
+//    publishVersion = '0.0.2'
 //    desc = 'assistant'
 //    website = 'https://github.com/Android-Modularity/assistant'
 //}
