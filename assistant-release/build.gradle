@@ -1,0 +1,16 @@
+apply from: '../scripts/module.gradle'
+
+dependencies {
+    implementation deps.appcompat_v7
+    implementation deps.design
+}
+
+apply plugin: 'bintray-release'
+publish {
+    userOrg = 'zfy'
+    groupId = 'com.zfy'
+    artifactId = 'assistant-release'
+    publishVersion = '1.0.1'
+    desc = 'assistant'
+    website = 'https://github.com/Android-Modularity/assistant'
+}

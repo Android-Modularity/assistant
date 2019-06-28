@@ -1,0 +1,27 @@
+apply from: '../scripts/module.gradle'
+
+dependencies {
+    implementation deps.appcompat_v7
+    implementation deps.design
+
+    implementation deps.common
+    implementation deps.leakCanaryDebug
+    implementation deps.recyclerView_v7
+    implementation deps.design
+    implementation deps.okhttp3
+    implementation deps.lightadapter
+    implementation deps.stetho
+    implementation deps.stetho_okhttp3
+    implementation deps.gson
+    implementation 'com.yuyh.json:jsonviewer:1.0.6'
+}
+
+apply plugin: 'bintray-release'
+publish {
+    userOrg = 'zfy'
+    groupId = 'com.zfy'
+    artifactId = 'assistant-debug'
+    publishVersion = '1.0.1'
+    desc = 'assistant'
+    website = 'https://github.com/Android-Modularity/assistant'
+}
